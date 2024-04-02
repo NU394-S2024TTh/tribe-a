@@ -1,30 +1,38 @@
-# Vite + React + Typescript + Eslint + Prettier
+# Vite + React + Typescript + Eslint + Prettier: an example repo
 
-A starter for React with Typescript with the fast Vite and all static code testing with Eslint and formatting with Prettier.
+A starter for React with Typescript with the fast Vite, Vitest and all static code testing with Eslint and formatting with Prettier. As of this writing updated to React 18; and the latest versions of all tools as of April 2024.
 
-![Vite + React + Typescript + Eslint + Prettier](/resources/screenshot.png)
+![Vite + React + Typescript + Vitest + Eslint + Prettier](/resources/screenshot.png)
 
-I found out about Vite and I wanted to have a boilerplate for the technologies that I use. You can find more about these in the following links: [Vite](https://github.com/vitejs/vite), [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [Eslint](https://eslint.org/), [Prettier](https://prettier.io/).
+You can find more about these in the following links: [Vite](https://vitejs.dev), [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [Eslint](https://eslint.org/), [Prettier](https://prettier.io/), [Vitest](https://vitest.dev/)
 
 ## Installation
 
-Clone the repo and run `yarn install`
-
-or Run command
+Make sure you are running node 20 or later
 
 ```
-npx degit TheSwordBreaker/vite-reactts-eslint-prettier project-name
+node --version
 ```
+
+Clone the repo and run `npm install`
+
+or preferred Run command
+
+```
+npx degit toddwseattle/pretty-vitest-react-ts-template project-name
+```
+
+this will create a clean version of the template in the `project-name` folder. omit project-name to create in the current directory. You will then need to initialize git yourself and push to github.
 
 ## Start
 
-After the successfull installation of the packages: `yarn dev`
+Install packages: `npm run dev`
 
 ## Steps in Vscode
 
-#### (works with better with this template)
+#### (works better with this template)
 
-1. Install Eslint and prettier extension for vs code.
+1. Install Eslint and prettier extension for vs code (separate extensions; not the combined one)
 2. Make Sure Both are enabled
 3. Make sure all packages are Installed. (Mostly Eslint and prettier in node_modules)
 4. Enable formatOnSave of vs code
@@ -32,6 +40,14 @@ After the successfull installation of the packages: `yarn dev`
 
 ![Screenshot (253)_LI](https://user-images.githubusercontent.com/52120562/162486286-7383a737-d555-4f9b-a4dd-c4a81deb7b96.jpg)
 
-If Everything is Good Then It Should Work, but let me new if something else happens
+If Everything is Good Then It Should Work, but let me new if something else happens.
 
-Made with ❤️ by theSwordBreaker(we Destory all types of sword ⚡)
+## pre-commit hook to lint files with eslint/prettier
+
+In this template, when you commit via `git commit` a [pre-commit hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) runs the command `npm run lint`, so that eslint and prettier are run and modify the files to conform. Consequently, you may end up with new changes after you commit! The easiest way to make sure you get a clean commit is to `npm run lint` before you commit.
+
+The npm command used in pre-commit is in the package.json key ` "pre-commit": "lint"`. Change or remove this as you see fit for your project.
+
+## Authorship and acknowledgments
+
+This was based on a [starter made with ❤️ by theSwordBreaker](https://github.com/TheSwordBreaker/vite-reactts-eslint-prettier). Thanks theSwordBreaker for the starter and vscode screenshots! It's been enhanced with vitest by toddwseattle using the best of the [js react starter](https://github.com/criesbeck/react-vitest) from [c-riesbeck](https://users.cs.northwestern.edu/~riesbeck/) for use by Northwestern University CS 394 students and others who like consistent looking typescript code.
