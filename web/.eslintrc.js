@@ -9,7 +9,8 @@ module.exports = {
     },
   },
   settings: {
-    react: {
+    // eslint-disable-next-line prettier/prettier
+    'react': {
       version: 'detect',
     },
     'import/resolver': {

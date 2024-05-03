@@ -1,10 +1,14 @@
+/** @type {import("prettier").Config} */
 module.exports = {
-  semi: true,
-  trailingComma: 'all',
-  singleQuote: true,
+  plugins: [require.resolve('prettier-plugin-tailwindcss')],
   printWidth: 90,
-  tabWidth: 2,
+  singleQuote: true,
+  trailingComma: 'all',
+  semi: true,
+  quoteProps: 'consistent',
   endOfLine: 'auto',
+  bracketSpacing: true,
+  arrowParens: 'always',
 };
 
 // {
