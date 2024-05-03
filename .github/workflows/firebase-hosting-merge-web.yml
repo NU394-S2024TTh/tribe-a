@@ -11,11 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - working-directory: ./web
-      - run: npm ci && npm run lint && npm run build-deploy
+      - name: Build and Deploy
+        working-directory: ./web
+        run: npm ci && npm run lint
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_STREAMING_TRENDS_AI }}
           channelId: live
           projectId: streaming-trends-ai
+

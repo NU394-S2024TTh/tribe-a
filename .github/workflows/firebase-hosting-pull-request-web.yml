@@ -13,10 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - working-directory: ./web
-      - run: npm ci && npm run lint && npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_STREAMING_TRENDS_AI }}
-          projectId: streaming-trends-ai
+      - name: Install dependencies and run lint and build
+        working-directory: ./web
+        run: npm ci && npm run lint && npm run build
+
