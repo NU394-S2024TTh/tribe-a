@@ -8,9 +8,9 @@ import App from './pages/App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <Theme>
-      <App />
-    </Theme>
-  </React.StrictMode>,
+	<React.StrictMode>
+		<Theme>
+			<App />
+		</Theme>
+	</React.StrictMode>,
 );
