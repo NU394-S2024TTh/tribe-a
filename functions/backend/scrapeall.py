@@ -2,9 +2,9 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-
+id="0133093"
 url = (
-    "https://www.imdb.com/title/tt6320628/reviews/_ajax?ref_=undefined&paginationKey={}"
+    "https://www.imdb.com/title/tt"+id+"/reviews/_ajax?ref_=undefined&paginationKey={}"
 )
 key = ""
 data = {"title": [], "review": []}
