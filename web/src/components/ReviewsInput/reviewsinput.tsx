@@ -11,7 +11,8 @@ export default function ReviewsInput() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // splits reviews by new line  
-        setReviews(input.split('\n'));
+        setReviews(input.trim().split('\n'));
+        // console.log(input.trim().split('\n'));
     };
     
     return (
