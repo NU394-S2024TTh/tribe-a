@@ -1,6 +1,6 @@
 import './App.css';
 
-import Cardtable from './cardtable';
+import Cardtable from './CardTable';
 function App() {
 	return (
 		<div className="App">

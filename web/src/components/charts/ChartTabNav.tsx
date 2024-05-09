@@ -4,9 +4,9 @@ import React from 'react';
 
 import { tw } from '../../utils/tw';
 import * as TabsPrimitive from '../primitives/Tabs';
-import AreaGraph from './areagraph';
-import { cdfcalc, numsorter } from './cdf';
-import BarGraph from './livegraph';
+import AreaGraph from './AreaGraph';
+import { cdfcalc, numsorter } from './CDF';
+import BarGraph from './LiveGraph';
 
 interface Tab {
 	title: string;

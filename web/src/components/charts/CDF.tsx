@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { reviewitem } from './charttabnav';
+import { reviewitem } from './ChartTabNav';
 export function cdfcalc(data: reviewitem[], numBins: number): reviewitem[] {
 	const counts: number[] = Array(numBins).fill(0);
 	const binSize = 5 / numBins;

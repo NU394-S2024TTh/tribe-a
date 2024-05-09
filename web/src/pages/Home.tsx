@@ -1,6 +1,6 @@
-import Tabs from '../components/Chart/charttabnav';
-import { TEST_DATA } from '../components/Chart/testdata';
-import ReviewsInput from '../components/ReviewsInput/reviewsinput';
+import Tabs from '../components/charts/ChartTabNav';
+import { TEST_DATA } from '../components/charts/testdata';
+import ReviewsInput from '../components/reviews/ReviewsInput';
 
 export default function Home() {
 	return (

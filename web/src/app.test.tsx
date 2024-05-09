@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
-import App from './components/Spike/App';
+import App from './components/spike/App';
 
 describe('counter tests', () => {
 	test('Counter should be 0 at the start', () => {
