@@ -71,5 +71,6 @@ class SentimentAnalyzer {
 // instantiate the SentimentAnalyzer class
 const sentimentAnalyzer = new SentimentAnalyzer("api-key-here");
 
-sentimentAnalyzer.getSentiment("This movie is the best I have ever seen.").then(response => {console.log(response);});
-// export default sentimentAnalyzer;
+//uncomment this and run node <this_file.mjs> to test
+//sentimentAnalyzer.getSentiment("This movie is the best I have ever seen.").then(response => {console.log(response);});
+export default sentimentAnalyzer;
