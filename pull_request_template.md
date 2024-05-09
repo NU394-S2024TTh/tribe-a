@@ -12,7 +12,7 @@ Please describe any additional packages you added to package.json.
 
 ### Linear Issue Tracking
 
-Fixes SMA-XX
+Fixes BAC-XX
 
 ### Checklist
 

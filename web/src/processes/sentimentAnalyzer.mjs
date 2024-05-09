@@ -57,27 +57,33 @@ class SentimentAnalyzer {
   }
 
   // Method to get sentiment of a single text
-  async getSentiment(text) {
-    const response = await this.chain.invoke({ text: text });
-    return response;
+  async getSentiment(review) {
+    const response = await this.chain.invoke({ text: review });
+    const sentiment = parseFloat(response);  // Ensure response is a number
+    return sentiment;
   }
 
+  async getSentiments(reviews) {
+    // synchronize multiple sentiment analysis promises by Promise.all (parallel execution)
+    const promises = [];
+    for (let review of reviews) {
+        const pS = sentimentAnalyzer.getSentiment(review);
+        promises.push(pS);
+    }
+    const sentiments = await Promise.all(promises);
+    return sentiments;
+  }
   // Method to get average sentiment of an array of reviews or comments
   async getAverageSentiment(reviews) {
-    let totalSentiment = 0;
     const numReviews = reviews.length;
+    const sentiments = await this.getSentiments(reviews);
 
-    for (const review of reviews) {
-      const response = await this.getSentiment(review);
-      totalSentiment += parseFloat(response); // Ensure response is a number
-    }
-
-    return totalSentiment / numReviews;
+    return sentiments.reduce((a, b) => a + b, 0) / numReviews;  // Calculate average
   }
 }
 
 // Instantiate the SentimentAnalyzer class
-const apiKey = "your-api-key-here";
+const apiKey = "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";
 const sentimentAnalyzer = new SentimentAnalyzer(apiKey);
 
 // Example reviews
@@ -93,8 +99,4 @@ sentimentAnalyzer.getSentiment(REVIEW_1).then(response => {
   console.log("Sentiment of REVIEW_1:", response);
 });
 
-sentimentAnalyzer.getAverageSentiment([REVIEW_1, REVIEW_2]).then(response => {
-  console.log("Average Sentiment of Reviews:", response);
-});
-
-export { SentimentAnalyzer, sentimentAnalyzer };
+export default sentimentAnalyzer;
