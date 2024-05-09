@@ -19,4 +19,5 @@ Fixes SMA-XX
 - [ ] Code compiles correctly
 - [ ] Added comments
 - [ ] Ran linter and made sure there were no errors
+- [ ] Double checked [wiki naming conventions](https://github.com/NU394-S2024TTh/tribe-a/wiki/Development-Practices#naming-conventions)
 - [ ] Extended the README / documentation, if necessary
