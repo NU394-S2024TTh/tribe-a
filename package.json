@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "firebase": "^10.11.1",
-        "firebase-tools": "^13.8.0"
+        "firebase-tools": "^13.8.0",
+        "langchain": "^0.1.36"
     }
 }
