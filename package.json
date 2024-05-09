@@ -14,7 +14,6 @@
         "lint": "npm run lint --workspaces"
     },
     "dependencies": {
-        "@rollup/rollup-win32-x64-msvc": "^4.17.2",
         "firebase": "^10.11.1",
         "firebase-tools": "^13.8.1",
         "langchain": "^0.1.36"
