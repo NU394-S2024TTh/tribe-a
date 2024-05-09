@@ -221,6 +221,14 @@ module.exports = {
 						},
 					},
 				},
+				custom: {
+					'theme-1': '#10D48E',
+					'theme-1b': '#28EFA8',
+					'theme-2': '#132A3A',
+					'theme-2b': '#204660',
+					'light': '#FFFFFF',
+					'dark': '#060E14',
+				},
 			},
 			transitionProperty: {
 				button: 'box-shadow, background-color, opacity, border-radius',
