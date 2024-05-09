@@ -3,15 +3,13 @@ import { PropsWithChildren } from 'react';
 
 import { tw } from '../../utils/tw';
 
-const _Root = tw(
-	TabsPrimitive.Root,
-)`border border-primitive-edge rounded-lg w-full max-w-xl`;
+const _Root = tw(TabsPrimitive.Root)`border rounded-lg w-full max-w-xl`;
 
 const _List = tw(TabsPrimitive.List)`flex w-full rounded-t-lg bg-primitive-faint`;
 
 const _Trigger = tw(
 	TabsPrimitive.Trigger,
-)`group first:rounded-tl-lg last:rounded-tr-lg border-b first:border-r last:border-l border-primitive-edge radix-state-active:bg-primitive-bold focus-visible:radix-state-active:border-b-transparent radix-state-inactive:hover:bg-primitive radix-state-inactive:bg-primitive-faint flex-1 px-3 py-2.5 focus:outline-none focus-visible:ring focus-visible:ring-highlight focus:z-10 focus-visible:border-transparent transition-button`;
+)`group first:rounded-tl-lg last:rounded-tr-lg border-white first:border-r last:border-l radix-state-active:bg-primitive-bold focus-visible:radix-state-active:border-white radix-state-inactive:hover:bg-primitive radix-state-inactive:bg-primitive-faint flex-1 px-3 py-2.5 focus:outline-none focus-visible:ring focus-visible:ring-highlight focus:z-10 focus-visible:border-white transition-button`;
 
 const TriggerInner = tw.span`text-sm font-medium text-primitive-type`;
 

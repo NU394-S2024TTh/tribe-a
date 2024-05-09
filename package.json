@@ -12,6 +12,6 @@
     },
     "dependencies": {
         "firebase": "^10.11.1",
-        "firebase-tools": "^13.8.0"
+        "firebase-tools": "^13.8.1"
     }
 }
