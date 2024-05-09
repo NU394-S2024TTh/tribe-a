@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "firebase": "^10.11.1",
-        "firebase-tools": "^13.8.0"
+        "firebase-tools": "^13.8.0",
+        "@rollup/rollup-darwin-arm64":"4.17.2"
     }
 }

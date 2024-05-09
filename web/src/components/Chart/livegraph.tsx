@@ -40,7 +40,7 @@ export default function LiveBarGraph({ receivedData, empty }: BarGraphProps) {
 			</BarChart>
 		);
 	}
-	if (receivedData != null) {
+	if (receivedData == null) {
 		return (
 			<div className="max-h-[400px] min-h-[400px] min-w-[160px] max-w-[160px] items-center justify-center">
 				<p className="mt-[50px] text-center text-[#c6bed4]">Sorry,</p>
