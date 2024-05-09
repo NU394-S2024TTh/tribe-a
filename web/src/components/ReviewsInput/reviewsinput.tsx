@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { sentimentAnalyzer } from '../../../../processes/sentimentAnalyzer'
 
 export default function ReviewsInput() {
     const [input, setInput] = useState<string>('');
@@ -8,11 +9,12 @@ export default function ReviewsInput() {
         setInput(event.target.value);
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // splits reviews by new line  
-        setReviews(input.trim().split('\n'));
-        // console.log(input.trim().split('\n'));
+        const reviews = input.trim().split('\n');
+        console.log(input.trim().split('\n'));
+        const sentiment = await sentimentAnalyzer.getAverageSentiment(reviews);
     };
     
     return (

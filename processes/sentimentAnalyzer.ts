@@ -59,6 +59,7 @@ class SentimentAnalyzer {
   // Method to get sentiment of a single text
   async getSentiment(text) {
     const response = await this.chain.invoke({ text: text });
+    console.log("Sentiment:", response)
     return response;
   }
 
@@ -72,29 +73,31 @@ class SentimentAnalyzer {
       totalSentiment += parseFloat(response); // Ensure response is a number
     }
 
+    console.log("Total Sentiment:", totalSentiment);
+
     return totalSentiment / numReviews;
   }
 }
 
 // Instantiate the SentimentAnalyzer class
-const apiKey = "your-api-key-here";
+const apiKey = "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";
 const sentimentAnalyzer = new SentimentAnalyzer(apiKey);
 
-// Example reviews
-const REVIEW_1 = `
-This series has a fantastic pilot, but the rest of the series is filler. If they had consolidated all the subplots from episodes 4~9 and had the finale be the halfway point it would fix the glacial pacing and repetitious foreshadowing. This is one of those show seasons that feels like its just setup for the next season.
-`;
-const REVIEW_2 = `
-Lord of the Flies in the Ontario wilderness instead of an island. Yesss. I'm interested in seeing how this goes! Think it's going to be intense, gut wrenching, etc. Misty is already a creep.
-`;
+// // Example reviews
+// const REVIEW_1 = `
+// This series has a fantastic pilot, but the rest of the series is filler. If they had consolidated all the subplots from episodes 4~9 and had the finale be the halfway point it would fix the glacial pacing and repetitious foreshadowing. This is one of those show seasons that feels like its just setup for the next season.
+// `;
+// const REVIEW_2 = `
+// Lord of the Flies in the Ontario wilderness instead of an island. Yesss. I'm interested in seeing how this goes! Think it's going to be intense, gut wrenching, etc. Misty is already a creep.
+// `;
 
-// Test the sentiment analyzer
-sentimentAnalyzer.getSentiment(REVIEW_1).then(response => {
-  console.log("Sentiment of REVIEW_1:", response);
-});
+// // Test the sentiment analyzer
+// sentimentAnalyzer.getSentiment(REVIEW_1).then(response => {
+//   console.log("Sentiment of REVIEW_1:", response);
+// });
 
-sentimentAnalyzer.getAverageSentiment([REVIEW_1, REVIEW_2]).then(response => {
-  console.log("Average Sentiment of Reviews:", response);
-});
+// sentimentAnalyzer.getAverageSentiment([REVIEW_1, REVIEW_2]).then(response => {
+//   console.log("Average Sentiment of Reviews:", response);
+// });
 
-export { SentimentAnalyzer, sentimentAnalyzer };
+export { sentimentAnalyzer };
