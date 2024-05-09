@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import UserCard from './radixcard';
+import UserCard from './RadixCard';
 
 export interface Members {
 	id: number;
