@@ -1,6 +1,6 @@
 import './App.css';
 
-import Cardtable from '../components/Spike/cardtable';
+import Cardtable from './cardtable';
 function App() {
 	return (
 		<div className="App">
