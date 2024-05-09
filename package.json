@@ -9,7 +9,8 @@
     "scripts": {
         "build": "npm run build --workspaces",
         "test": "npm run test --workspaces",
-        "dev": "npm run dev --workspaces"
+        "dev": "npm run dev --workspaces",
+        "start": "npm run start --workspaces"
     },
     "dependencies": {
         "@rollup/rollup-win32-x64-msvc": "^4.17.2",
