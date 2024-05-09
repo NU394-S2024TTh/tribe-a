@@ -3,14 +3,16 @@
     "version": "0.0.1",
     "workspaces": [
         "web",
-        "shared",
+        "sharednpm install rollup --save-dev",
         "functions"
     ],
     "scripts": {
         "build": "npm run build --workspaces",
-        "test": "npm run test --workspaces"
+        "test": "npm run test --workspaces",
+        "dev": "npm run dev --workspaces"
     },
     "dependencies": {
+        "@rollup/rollup-win32-x64-msvc": "^4.17.2",
         "firebase": "^10.11.1",
         "firebase-tools": "^13.8.1",
         "langchain": "^0.1.36"
