@@ -49,9 +49,15 @@ export default function AreaGraph({ receivedData, empty }: AreaGraphProps) {
 					</linearGradient>
 				</defs>
 				<Area dataKey="number" fill="url(#color)" stroke="#281c34" />
-				<XAxis dataKey="name" tick={{ fill: '#49565f' }} tickLine={false} />
+				<XAxis
+					dataKey="name"
+					label={{ value: 'Sentiment', position: 'insideBottom', offset: 0 }}
+					tick={{ fill: '#49565f' }}
+					tickLine={false}
+				/>
 				<YAxis
 					type="number"
+					label={{ value: 'Count', angle: -90, position: 'insideLeft', offset: 0 }}
 					domain={[0, 5]}
 					axisLine={false}
 					tickLine={false}

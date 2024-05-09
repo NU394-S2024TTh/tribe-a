@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 
-export default function ReviewsInput() {
+interface ReviewsInputProps {
+    handleSubmit: (reviews: string[]) => void;
+}
+  
+export default function ReviewsInput({ handleSubmit }: ReviewsInputProps) {
     const [input, setInput] = useState<string>('');
-    const [reviews, setReviews] = useState<string[]>([]); 
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput(event.target.value);
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // splits reviews by new line  
-        setReviews(input.trim().split('\n'));
-        // console.log(input.trim().split('\n'));
+        const reviews: string[] = input.trim().split('\n');
+        handleSubmit(reviews);
     };
-    
+
     return (
         <div className="flex justify-center items-center my-5">
-            <form onSubmit={handleSubmit} className="w-full max-w-sm">
+            <form onSubmit={submitForm} className="w-full max-w-sm">
                 <label htmlFor="textInput" className="block mb-2 text-white">Enter reviews:</label>
                 <textarea
                     id="textInput"

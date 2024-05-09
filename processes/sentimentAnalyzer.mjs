@@ -59,7 +59,7 @@ class SentimentAnalyzer {
   // Method to get sentiment of a single text
   async getSentiment(text) {
     const response = await this.chain.invoke({ text: text });
-    return response;
+    return parseFloat(response);
   }
 
   // Method to get average sentiment of an array of reviews or comments
