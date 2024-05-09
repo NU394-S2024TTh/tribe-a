@@ -20,8 +20,10 @@ function CustomTooltip({ active, payload, label }: any) {
 	if (active) {
 		return (
 			<div className="tooltip  min-h-[69px] min-w-[160px] border-[1px] bg-white">
-				<h4 className="ml-[6px] mt-[5px] text-[#c6bed4]">Ballls:</h4>
-				<h4 className="ml-[6px] mt-[14px] text-[#281c34]">Not sure what`s going on</h4>
+				<h4 className="ml-[6px] mt-[5px] text-[#268b07]">{label}</h4>
+				<h4 className="ml-[6px] mr-[6px] mt-[14px] text-[#060e14]">
+					{payload[0].value} reviews
+				</h4>
 			</div>
 		);
 	}
@@ -31,25 +33,10 @@ function CustomTooltip({ active, payload, label }: any) {
 export default function AreaGraph({ receivedData, empty }: AreaGraphProps) {
 	if (empty) {
 		return (
-			<ResponsiveContainer width={575} height={400} className="ml-[-40px]">
-				<AreaChart data={receivedData}>
-					<defs>
-						<linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="0%" stopColor="#281c34" stopOpacity={0.9} />
-							<stop offset="75%" stopColor="#483464" stopOpacity={0.2} />
-						</linearGradient>
-					</defs>
-					<XAxis dataKey="name" tick={false} tickLine={false} />
-					<YAxis
-						type="number"
-						domain={[0, 5]}
-						axisLine={false}
-						tickLine={false}
-						tick={{ fill: '#49565f' }}
-					/>
-					<CartesianGrid opacity={0.4} vertical={false} />
-				</AreaChart>
-			</ResponsiveContainer>
+			<div className="max-h-[400px] min-h-[400px] min-w-[160px] max-w-[160px] items-center justify-center">
+				<p className="mt-[50px] text-center text-[#c6bed4]">Sorry,</p>
+				<p className="mt-[75px] text-center text-[#281c34]">There`s no data.</p>
+			</div>
 		);
 	}
 	return (
@@ -57,8 +44,8 @@ export default function AreaGraph({ receivedData, empty }: AreaGraphProps) {
 			<AreaChart data={receivedData}>
 				<defs>
 					<linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-						<stop offset="0%" stopColor="#281c34" stopOpacity={0.9} />
-						<stop offset="75%" stopColor="#483464" stopOpacity={0.2} />
+						<stop offset="0%" stopColor="#268b07" stopOpacity={0.9} />
+						<stop offset="75%" stopColor="#10d48e" stopOpacity={0.6} />
 					</linearGradient>
 				</defs>
 				<Area dataKey="number" fill="url(#color)" stroke="#281c34" />
@@ -70,7 +57,7 @@ export default function AreaGraph({ receivedData, empty }: AreaGraphProps) {
 					tickLine={false}
 					tick={{ fill: '#49565f' }}
 				/>
-				{/* <Tooltip/> */}
+
 				<Tooltip content={<CustomTooltip />} />
 				<CartesianGrid opacity={0.4} vertical={false} />
 			</AreaChart>

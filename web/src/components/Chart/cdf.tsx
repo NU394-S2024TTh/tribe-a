@@ -1,18 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { reviewitem } from './charttabnav';
-export function cdfcalc(data: reviewitem[]): reviewitem[] {
-	// Initialize an object to store the counts of each number
-	const countMap: Record<number, number> = {};
+export function cdfcalc(data: reviewitem[], numBins: number): reviewitem[] {
+	const counts: number[] = Array(numBins).fill(0);
+	const binSize = 5 / numBins;
 
-	// Count the occurrences of each number
 	for (const item of data) {
-		countMap[item.number] = (countMap[item.number] || 0) + 1;
+		const number = item.number;
+		const binIndex = Math.floor(number / binSize);
+		if (binIndex < numBins) {
+			counts[binIndex]++;
+		}
 	}
 
-	// Construct the result in the desired format
-	const result: reviewitem[] = Object.keys(countMap).map((key) => ({
-		name: key,
-		number: countMap[parseInt(key)],
-	}));
+	const result: reviewitem[] = counts.map((count, index) => {
+		const binStart = (index * binSize).toFixed(1);
+		const binEnd = ((index + 1) * binSize).toFixed(1); //  - ${binEnd}
+		return {
+			name: `${binStart}`,
+			number: count,
+		};
+	});
 
 	return result;
 }
