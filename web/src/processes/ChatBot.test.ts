@@ -1,28 +1,38 @@
 import fs from 'fs';
-import { expect, test } from 'vitest';
+import { assert, expect, test } from 'vitest';
 import path from 'path';
 
-import makeChatBot from './ChatBot';
+import ChatBot from './ChatBot';
 
 test('should create a retriever', async () => {
   const filePath = path.join(__dirname, 'test_reviews.txt');
   const docs = fs.readFileSync(filePath, 'utf8').split('\n');
-  const { chatBot, retriever } = await makeChatBot(docs);
+  const chatBot = new ChatBot();
+  await chatBot.init_from_texts(docs);
   
-  const retrieved = await retriever.invoke('Reviews of best action movies');
+  // check the type of the retriever
+  // console.log("chatBot", chatBot);
+  // console.log("retriever", await chatBot.retriever);
+
+  // const retrieved = await chatBot.get_relevant_documents("best action movies");
   
-  console.log("best action movies", retrieved);
-  // make sure 'Cats' is in the pageContent attribute the list of retrieved documents
-	// expect(retrieved).toContain('Cats | Poor acting. The characters felt very flat and unconvincing.');
+  // // console.log("best action movies", retrieved);
+  // // make sure 'The Matrix' is a sub-string of the string value of pageContent attribute of one element in the list of retrieved documents
+  // assert.ok(retrieved.some(doc => doc.pageContent.includes('The Matrix')));
     
-  const resultOne = await chatBot.invoke({
-    question: "What is the worst tv show or movie based on the reviews?",
-  });
-  // console.log({ resultOne });
+  const resultOne = await chatBot.ask_question("What are the reviews related to action movies?");
+  // console.log(await chatBot.ask_question("Give me a summary of all the reviews"));
 
-  const resultTwo = await chatBot.invoke({
-    question: "Why?",
-  });
-  // console.log({ resultTwo });
+  console.log({ resultOne });
+  console.log(JSON.stringify(resultOne, null, 2));
 
-});
+  // test if ChatBot can remember the previous question and answer
+  const resultTwo = await chatBot.ask_question("Which one do you think is the best?");
+  console.log({ resultTwo });
+  console.log(JSON.stringify(resultTwo, null, 2));
+  // test if ChatBot can remember the previous question and answer
+  const resultThree = await chatBot.ask_question("Sorry, I didn't get that. Can you repeat it?");
+  console.log({ resultThree });
+  console.log(JSON.stringify(resultThree, null, 2));
+
+}, 10000);
