@@ -5,7 +5,7 @@ import { assert, test } from 'vitest';
 import ChatBot from './ChatBot';
 
 test('should create a retriever', async () => {
-	const filePath = path.join(__dirname, 'test_reviews.txt');
+	const filePath = path.join(__dirname, 'testReviews.txt');
 	const docs = fs.readFileSync(filePath, 'utf8').split('\n');
 	const chatBot = new ChatBot();
 	await chatBot.init_from_texts(docs);
@@ -31,9 +31,7 @@ test('should create a retriever', async () => {
 	console.log({ resultTwo });
 	console.log(JSON.stringify(resultTwo, null, 2));
 	// test if ChatBot can remember the previous question and answer
-	const resultThree = await chatBot.ask_question(
-		"Why?",
-	);
+	const resultThree = await chatBot.ask_question('Why?');
 	console.log({ resultThree });
 	console.log(JSON.stringify(resultThree, null, 2));
 }, 10000);
