@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import sentimentAnalyzer from '../../processes/sentimentAnalyzer.mjs';
+import sentimentAnalyzer from '../../processes/SentimentAnalyzer.mjs';
 
 export default function ReviewsInput() {
 	const [input, setInput] = useState<string>('');
