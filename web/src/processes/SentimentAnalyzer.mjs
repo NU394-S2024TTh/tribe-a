@@ -83,7 +83,7 @@ class SentimentAnalyzer {
 }
 
 // Instantiate the SentimentAnalyzer class
-const apiKey = "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";
+const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 const sentimentAnalyzer = new SentimentAnalyzer(apiKey);
 
 // Example reviews
