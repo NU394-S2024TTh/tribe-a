@@ -5,7 +5,7 @@ import ReviewsInput from '../components/reviews/ReviewsInput';
 export default function Home() {
 	return (
 		<div className="flex h-screen flex-row items-center justify-center bg-[#132a3a]">
-			<div className="mt-10 mr-20">
+			<div className="mr-20 mt-10">
 				<ReviewsInput />
 			</div>
 			<div className="mt-10">

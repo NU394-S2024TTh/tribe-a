@@ -1,22 +1,20 @@
 // import { HNSWLib } from '@langchain/community/vectorstores/hnswlib';
+import { BaseMessage } from '@langchain/core/messages';
+import { PromptTemplate } from '@langchain/core/prompts';
+import { RunnableSequence } from '@langchain/core/runnables';
+import { VectorStoreRetriever } from '@langchain/core/vectorstores';
 import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai';
-import { PromptTemplate } from "@langchain/core/prompts";
-import { RunnableSequence } from "@langchain/core/runnables";
-import { BaseMessage } from "@langchain/core/messages";
-
-import { LLMChain } from "langchain/chains";
-
+import { LLMChain } from 'langchain/chains';
+import { BufferMemory } from 'langchain/memory';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { formatDocumentsAsString } from "langchain/util/document";
-import { BufferMemory } from "langchain/memory";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
-import { VectorStoreRetriever } from "@langchain/core/vectorstores";
+import { formatDocumentsAsString } from 'langchain/util/document';
+import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 
 export default class ChatBot {
 	textSplitter!: RecursiveCharacterTextSplitter;
-	vectorStore!: MemoryVectorStore;  // Memory Vector Store for storing database of texts (e.g., reviews)
-	retriever!: VectorStoreRetriever;  // Retriever for retrieving relevant context based on a question with LLM1
-	memory!: BufferMemory;  // Buffer Memory for storing chat history
+	vectorStore!: MemoryVectorStore; // Memory Vector Store for storing database of texts (e.g., reviews)
+	retriever!: VectorStoreRetriever; // Retriever for retrieving relevant context based on a question with LLM1
+	memory!: BufferMemory; // Buffer Memory for storing chat history
 	chain!: RunnableSequence;
 
 	constructor() {}
@@ -25,31 +23,34 @@ export default class ChatBot {
 		this.textSplitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000 });
 		const docs = await this.textSplitter.createDocuments(texts);
 
-		console.log("# docs", docs.length);
+		console.log('# docs', docs.length);
 
 		// const vectorStore = await HNSWLib.fromDocuments(docs, new OpenAIEmbeddings({apiKey: import.meta.env.VITE_OPENAI_API_KEY}));
-		this.vectorStore = await MemoryVectorStore.fromDocuments(docs, new OpenAIEmbeddings({ apiKey: import.meta.env.VITE_OPENAI_API_KEY }));
+		this.vectorStore = await MemoryVectorStore.fromDocuments(
+			docs,
+			new OpenAIEmbeddings({ apiKey: import.meta.env.VITE_OPENAI_API_KEY }),
+		);
 		this.retriever = await this.vectorStore.asRetriever();
 
 		this.memory = new BufferMemory({
-			memoryKey: "chatHistory",
-			inputKey: "question", // The key for the input to the chain
-			outputKey: "text", // The key for the final conversational output of the chain
+			memoryKey: 'chatHistory',
+			inputKey: 'question', // The key for the input to the chain
+			outputKey: 'text', // The key for the final conversational output of the chain
 			returnMessages: true, // If using with a chat model (e.g. gpt-3.5 or gpt-4)
 		});
 
 		const serializeChatHistory = (chatHistory: Array<BaseMessage>): string =>
 			chatHistory
 				.map((chatMessage) => {
-					if (chatMessage._getType() === "human") {
+					if (chatMessage._getType() === 'human') {
 						return `Human: ${chatMessage.content}`;
-					} else if (chatMessage._getType() === "ai") {
+					} else if (chatMessage._getType() === 'ai') {
 						return `Assistant: ${chatMessage.content}`;
 					} else {
 						return `${chatMessage.content}`;
 					}
 				})
-				.join("\n");
+				.join('\n');
 
 		/**
 		 * Create two prompt templates, one for answering questions, and one for
@@ -64,7 +65,7 @@ export default class ChatBot {
 			----------
 			QUESTION: {question}
 			----------
-			Helpful Answer:`
+			Helpful Answer:`,
 		);
 		const questionGeneratorTemplate = PromptTemplate.fromTemplate(
 			`Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
@@ -73,12 +74,12 @@ export default class ChatBot {
 			----------
 			FOLLOWUP QUESTION: {question}
 			----------
-			Standalone question:`
+			Standalone question:`,
 		);
 
 		// Initialize fast and slow LLMs, along with chains for each
 		const fasterModel = new ChatOpenAI({
-			model: "gpt-3.5-turbo",
+			model: 'gpt-3.5-turbo',
 			apiKey: import.meta.env.VITE_OPENAI_API_KEY,
 		});
 		const fasterChain = new LLMChain({
@@ -87,7 +88,7 @@ export default class ChatBot {
 		});
 
 		const slowerModel = new ChatOpenAI({
-			model: "gpt-4o",
+			model: 'gpt-4o',
 			apiKey: import.meta.env.VITE_OPENAI_API_KEY,
 		});
 		const slowerChain = new LLMChain({
@@ -96,8 +97,10 @@ export default class ChatBot {
 		});
 
 		// Define the document type to suppress TypeScript errors for formatDocumentsAsString
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		type Document<T = Record<string, any>> = T & {
 			pageContent: string;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			metadata: Record<string, any>;
 		};
 
@@ -126,7 +129,7 @@ export default class ChatBot {
 			}
 
 			const response = await slowerChain.invoke({
-				chatHistory: chatHistoryString ?? "",
+				chatHistory: chatHistoryString ?? '',
 				context: serializedDocs,
 				question: newQuestion,
 			});
@@ -138,7 +141,7 @@ export default class ChatBot {
 				},
 				{
 					text: response.text,
-				}
+				},
 			);
 
 			return {
@@ -193,5 +196,4 @@ export default class ChatBot {
 		await this.clear_chat_history();
 		await this.clear_vector_store();
 	}
-
 }
