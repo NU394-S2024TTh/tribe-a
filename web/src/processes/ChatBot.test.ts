@@ -27,12 +27,12 @@ test('should create a retriever', async () => {
 	console.log(JSON.stringify(resultOne, null, 2));
 
 	// test if ChatBot can remember the previous question and answer
-	const resultTwo = await chatBot.ask_question('Which one do you think is the best?');
+	const resultTwo = await chatBot.ask_question('Which movie do you think is the best?');
 	console.log({ resultTwo });
 	console.log(JSON.stringify(resultTwo, null, 2));
 	// test if ChatBot can remember the previous question and answer
 	const resultThree = await chatBot.ask_question(
-		"Sorry, I didn't get that. Can you repeat it?",
+		"Why?",
 	);
 	console.log({ resultThree });
 	console.log(JSON.stringify(resultThree, null, 2));
