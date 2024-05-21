@@ -1,59 +1,81 @@
-import React, { useState, useEffect, useRef } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
-import { Cross2Icon } from '@radix-ui/react-icons';
+// import {DeepChat as DeepChatCore} from 'deep-chat'; <- type
+import { DeepChat } from 'deep-chat-react';
 import './Chatbox.css';
-import { PaperPlaneIcon } from '@radix-ui/react-icons'
+import { Signals } from 'deep-chat/dist/types/handler';
+import ChatBot from '../../processes/ChatBot';
+import testReviews from './testReviews';
+import ai from "../../../resources/robot.png"
+import user from "../../../resources/white_user.png"
 
-const ChatBox = () => {
-    const [messages, setMessages] = useState([
-        { from: 'assistant', text: 'Hello! How can I assist you today?' }
-    ]);
-    const [inputValue, setInputValue] = useState('');
-    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+function Chatbox() {
+    const initialMessages = [
+        { role: 'ai', text: 'Ask me anything about movie recommendations!' },
+    ];
 
-    const handleSend = () => {
-        if (inputValue.trim()) {
-            setMessages([...messages, { from: 'user', text: inputValue }]);
-            setInputValue('');
-        }
-    };
 
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    const chatBot = new ChatBot();
+    chatBot.init_from_texts(testReviews);
+    async function getMessage(body: any) {
+        console.log('body', body);
+        const retrieved = await chatBot.get_relevant_documents(body.messages[0].text);
+        console.log(retrieved);
+        const resultOne = await chatBot.ask_question(
+            body.messages[0].text
+        );
+        console.log({ resultOne });
+        console.log(JSON.stringify(resultOne.result, null, 2));
+        return JSON.stringify(resultOne.result, null, 2);
+    }
+
+    async function chatboxhandler(body: any, signals: Signals) {
+        let result = await getMessage(body); // Await the getMessage function call
+        result = result.replace(/"/g, "");
+        setTimeout(() => {
+            signals.onResponse({
+                text: result,
+            });
+        }, 200);
+    }
 
     return (
-        <Dialog.Root open={true}>
-            <Dialog.Overlay className="chat-overlay" />
-            <Dialog.Content className="chat-content">
-                <Dialog.Title className="chat-title">AI Assistant</Dialog.Title>
-                {/* <Dialog.Close className="chat-close">
-                    <Cross2Icon />
-                </Dialog.Close> */}
-                <div className="chat-messages-container">
-                    <div className="chat-messages">
-                        {messages.map((message, index) => (
-                            <div key={index} className={`chat-message ${message.from}`}>
-                                {message.text}
-                            </div>
-                        ))}
-                        <div ref={messagesEndRef} />
-                    </div>
-                </div>
-                <div className="chat-input-container">
-                    <input
-                        type="text"
-                        className="chat-input"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                        placeholder="Type your message..."
-                    />
-                    <button className="chat-send" onClick={handleSend}> <PaperPlaneIcon /></button>
-                </div>
-            </Dialog.Content>
-        </Dialog.Root>
+        <div className="h-screen flex items-center justify-center">
+            <DeepChat
+                avatars={{
+                    "ai": { "src": ai, "styles": { avatar: { "fontSize": "1.5rem" } } },
+                    "user": { "src": user, "styles": { avatar: { "fontSize": "1.5rem" } } }
+                }}
+
+                messageStyles={{
+                    default: {
+                        shared: {
+                            bubble: {
+                                maxWidth: "75%",
+                                borderRadius: "1em"
+                            }
+                        },
+                        ai: {
+                            bubble: {
+                                color: "white",
+                                backgroundColor: "#2F2F2F",
+                            }
+                        },
+                        user: {
+                            bubble: {
+                                color: "white",
+                                backgroundColor: "#2F2F2F",
+                                marginTop: "2%",
+                            }
+                        }
+                    }
+                }}
+                initialMessages={initialMessages}
+                style={{ borderRadius: '10px', backgroundColor: "#212221", width: "80vw", height: "calc(80vh - 70px)", paddingTop: "10px" }}
+                inputAreaStyle={{ borderRadius: '10px', backgroundColor: "#212221", paddingBottom: "3%" }}
+                textInput={{ styles: { text: { color: "white" }, container: { borderRadius: '10px', backgroundColor: "#3F3F3F" } } }}
+                request={{ handler: chatboxhandler }}
+            />
+        </div>
     );
 };
 
-export default ChatBox;
+export default Chatbox;
