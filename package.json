@@ -14,7 +14,6 @@
         "lint": "npm run lint --workspaces"
     },
     "dependencies": {
-        "deep-chat-react": "^1.4.11",
         "firebase": "^10.11.1",
         "firebase-tools": "^13.8.1"
     }
