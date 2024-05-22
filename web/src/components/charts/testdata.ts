@@ -85,3 +85,13 @@ export const TEST_DATA1 = [
 		number: 5,
 	},
 ];
+
+
+export const SENTIMENT_TREND_DATA = [
+    { name: 'Week 1', sentiment: 3.5, description: 'Positive feedback after pilot episode. Lots of traction' },
+    { name: 'Week 2', sentiment: 4.2, description: 'Increased positive sentiment. More viewers seem to be enjoying the show' },
+    { name: 'Week 3', sentiment: 3.8, description: 'Mixed reviews after episode 2. Some people were dissatisfied with the storyline' },
+    { name: 'Week 4', sentiment: 4.5, description: 'Highly positive reviews for episode 3. ' },
+    { name: 'Week 5', sentiment: 3.9, description: 'Steady positive sentiment. Many more adore the main actor following his charming interview' },
+    { name: 'Week 6', sentiment: 4.1, description: 'Continued positive sentiment, although awaiting new episode releases' },
+];

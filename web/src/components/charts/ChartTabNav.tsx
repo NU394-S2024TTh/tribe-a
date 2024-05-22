@@ -7,6 +7,8 @@ import * as TabsPrimitive from '../primitives/Tabs';
 import AreaGraph from './AreaGraph';
 import { cdfcalc, numsorter } from './CDF';
 import BarGraph from './LiveGraph';
+import TrendGraph from './TrendGraph';
+import { SENTIMENT_TREND_DATA } from './testdata';
 
 interface Tab {
 	title: string;
@@ -23,6 +25,10 @@ const tabs: Tab[] = [
 	{
 		title: 'Sentiment Analysis',
 		value: 'tab2',
+	},
+	{
+		title: 'Sentiment Trend Analysis',
+		value: 'tab3',
 	},
 ];
 
@@ -142,6 +148,13 @@ export default function Tabs({ data }: data) {
 											{/* <div>{JSON.stringify(tabData)}</div> THIS IS FOR DEBUGGING TO SEE THE RAW JSON DATA*/}
 										</div>
 									);
+								}
+								else if (value == 'tab3') {
+										return (
+											<div className="mt-10 flex w-full flex-col items-center justify-center">
+												<TrendGraph data={SENTIMENT_TREND_DATA} empty={SENTIMENT_TREND_DATA.length === 0} />
+											</div>
+										);
 								}
 							} catch (error) {
 								console.error(error);
