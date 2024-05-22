@@ -1,9 +1,9 @@
 import praw
 import json
 # Reddit API credentials
-client_id = 'VVDFsXhfzl5Bk_Il_ykTwg'
-client_secret = '1PSjnF_Od4nMEm7AuOyUgl0fNO_PMw'
-user_agent = 'reddituser1039412'
+client_id = 'CLIENT-ID'
+client_secret = 'CLIENT-SECRET'
+user_agent = 'USER-AGENT'
 
 # Initialize Reddit instance
 reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent=user_agent)
