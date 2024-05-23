@@ -22,7 +22,7 @@ def get_rotten_tomatoes_reviews(url, output_csv='rottentomatoes_reviews.csv'):
     """
     try:
         # Get the page content and extract movieId
-        r = requests.get(url, headers=headers)
+        r = s.get(url, headers=headers)
         r.raise_for_status()
         movie_id = re.search(r'(?<=movieId":")(.*?)(?=")', r.text).group(1)
 
@@ -39,15 +39,17 @@ def get_rotten_tomatoes_reviews(url, output_csv='rottentomatoes_reviews.csv'):
         # Fetch reviews in a loop until all pages are processed
         while True:
             response = s.get(api_url, headers=headers, params=params)
+            response.raise_for_status()
             data = response.json()
+
+            review_data.extend(data['reviews'])
 
             if not data['pageInfo']['hasNextPage']:
                 break
 
             params['endCursor'] = data['pageInfo']['endCursor']
-            params['startCursor'] = data['pageInfo']['startCursor'] if data['pageInfo'].get('startCursor') else ''
+            params['startCursor'] = data['pageInfo'].get('startCursor', '')
 
-            review_data.extend(data['reviews'])
             time.sleep(1)  # Delay to prevent rate limiting
 
         # Convert the data into a DataFrame and save it to CSV
@@ -56,9 +58,15 @@ def get_rotten_tomatoes_reviews(url, output_csv='rottentomatoes_reviews.csv'):
         print(f"Data successfully saved to {output_csv}")
 
         return df
+    except requests.exceptions.RequestException as req_err:
+        print(f"Request error: {req_err}")
+    except re.error as re_err:
+        print(f"Regex error: {re_err}")
+    except KeyError as key_err:
+        print(f"Key error: {key_err}")
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
-        return None
+        print(f"An unexpected error occurred: {e}")
+    return None
 
 # Example usage:
 url = 'https://www.rottentomatoes.com/m/interstellar_2014'
