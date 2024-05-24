@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
-import App from './components/Spike/App';
+import App from './components/spike/App';
 import Home from './pages/Home';
 
 // https://github.com/recharts/recharts/issues/2268#issuecomment-1129412873
