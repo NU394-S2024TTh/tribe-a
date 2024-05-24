@@ -1,86 +1,74 @@
 import logging
-import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import time
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.108 Safari/537.36'
-}
-
 def get_episode_urls(show_url):
-    """Get the list of episode URLs from the show page."""
+    logging.info(f"Fetching episode list from {show_url}")
+    
+    response = requests.get(show_url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    
     episode_urls = []
-    response = requests.get(show_url, headers=headers)
-    soup = BeautifulSoup(response.content, 'html.parser')
+    episode_containers = soup.find_all("div", class_="info")
     
-    # Find all episode links (updated selector based on IMDb structure)
-    episode_links = soup.find_all('a', class_='btn-full')
-    for link in episode_links:
-        episode_urls.append('https://www.imdb.com' + link.get('href'))
-    
+    for container in episode_containers:
+        link = container.find("a", href=True)
+        if link:
+            episode_url = "https://www.imdb.com" + link['href']
+            episode_urls.append(episode_url)
+            logging.info(f"Found episode URL: {episode_url}")
+
+    logging.info(f"Total {len(episode_urls)} episode URLs found.")
     return episode_urls
 
-def scrape_imdb_reviews(episode_url, episode_number, data):
-    """Scrape reviews for a single episode."""
-    url = episode_url + "reviews/_ajax?ref_=undefined&paginationKey={}"
-    key = ""
+def scrape_imdb_reviews(episode_url):
+    logging.info(f"Scraping reviews from {episode_url}")
+    
+    response = requests.get(episode_url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    
+    reviews = []
+    review_containers = soup.find_all("div", class_="text show-more__control")
+    
+    for container in review_containers:
+        review_text = container.get_text(strip=True)
+        review_date = container.find_next("span", class_="review-date").get_text(strip=True)
+        rating = container.find_previous("span", class_="rating-other-user-rating")
+        review_rating = rating.span.get_text(strip=True) if rating else None
+        author = container.find_previous("span", class_="display-name-link").a.get_text(strip=True)
+        
+        reviews.append({
+            "review_content": review_text,
+            "time_published": review_date,
+            "rating": review_rating,
+            "user_demographic_data": {
+                "author": author
+            }
+        })
+    
+    logging.info(f"Scraped {len(reviews)} reviews from {episode_url}")
+    return reviews
 
-    logging.info(f"Starting to scrape IMDb reviews for episode {episode_number}")
+def save_reviews_to_json(show_name, reviews, output_json):
+    with open(output_json, 'w', encoding='utf-8') as f:
+        json.dump(reviews, f, ensure_ascii=False, indent=4)
+    logging.info(f"Reviews saved to {output_json}")
 
-    while True:
-        response = requests.get(url.format(key), headers=headers)
-        soup = BeautifulSoup(response.content, "html.parser")
-
-        # Find the pagination key
-        pagination_key = soup.find("div", class_="load-more-data")
-        if not pagination_key:
-            logging.info("No more reviews to load.")
-            break
-
-        key = pagination_key["data-key"]
-
-        reviews = soup.find_all(class_="review-container")
-        if not reviews:
-            logging.info("No reviews found on this page.")
-            break
-
-        for review in reviews:
-            title = review.find(class_="title")
-            text = review.find(class_="text show-more__control")
-            rating = review.find(class_="rating-other-user-rating")
-            date = review.find(class_="review-date")
-
-            data["episode_number"].append(episode_number)
-            data["title"].append(title.get_text(strip=True) if title else "")
-            data["review"].append(text.get_text(strip=True) if text else "")
-            data["rating"].append(rating.get_text(strip=True) if rating else "")
-            data["date"].append(date.get_text(strip=True) if date else "")
-
-        logging.info(f"Scraped {len(data['title'])} reviews so far for episode {episode_number}.")
-        time.sleep(1)  # Delay to prevent being rate limited
-
-    logging.info(f"Completed scraping reviews for episode {episode_number}.")
-
-def scrape_show_reviews(show_url, output_csv):
-    """Scrape reviews for all episodes of a show."""
+def scrape_show_reviews(show_url, output_json):
     episode_urls = get_episode_urls(show_url)
-    data = {"episode_number": [], "title": [], "review": [], "rating": [], "date": []}
-
-    for i, episode_url in enumerate(episode_urls, start=1):
-        scrape_imdb_reviews(episode_url, i, data)
-
-    logging.info(f"Scraped a total of {len(data['title'])} reviews. Saving to {output_csv}")
-
-    df = pd.DataFrame(data)
-    df.to_csv(output_csv, index=False)
-
-    logging.info("Scraping completed successfully")
+    all_reviews = []
+    
+    for episode_url in episode_urls:
+        reviews = scrape_imdb_reviews(episode_url)
+        all_reviews.extend(reviews)
+    
+    save_reviews_to_json(show_url, all_reviews, output_json)
 
 # Example usage:
-show_url = "https://www.imdb.com/title/tt0944947/episodes?season=1"  # URL of the season's episodes list
-output_csv = "imdb_episode_reviews.csv"
-scrape_show_reviews(show_url, output_csv)
+show_url = "https://www.imdb.com/title/tt11041332/episodes?season=1"  # Replace with the actual URL of the show's episodes list
+output_json = "imdb_reviews.json"
+scrape_show_reviews(show_url, output_json)

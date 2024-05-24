@@ -62,7 +62,7 @@ movie_id = "8806524"
 movie_id=["11041332","8806524","18335752","0106004","13111078","9184820","15399640","13111040","26591110","9018736"]
 
 movie_name=["yellowjackets","startrekpicard","1923","Frasier","SpecialOps:Lioness","StarTrekLowerDecks","LawmenBassReeves","TheOffer","Elsbeth","AvatarTheLastAirbender"]
-i=2
+i=0
 while i<10:
     output_json = "reviews/imdb/"+movie_name[i]+"_overallreviews.json"
     scrape_imdb_reviews(movie_id[i], output_json)
