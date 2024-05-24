@@ -30,9 +30,6 @@
 		"clsx": "^2.1.1",
 		"deep-chat-react": "^1.4.11",
 		"depcheck": "^1.4.7",
-		"firebase": "^10.11.1",
-		"firebase-cli": "^0.0.4",
-		"firebase-tools": "^13.8.1",
 		"firestore": "^1.1.6",
 		"langchain": "^0.1.36",
 		"next": "^14.2.3",
@@ -44,7 +41,9 @@
 		"tinyspy": "^2.2.1"
 	},
 	"devDependencies": {
-		"@testing-library/react": "^14.2.2",
+		"@testing-library/jest-dom": "^6.4.5",
+		"@testing-library/react": "^14.3.1",
+		"@types/jest": "^29.5.12",
 		"@types/react": "^18.2.73",
 		"@types/react-dom": "^18.2.23",
 		"@typescript-eslint/eslint-plugin": "^7.5.0",
@@ -68,6 +67,5 @@
 		"vite": "^5.2.11",
 		"vitest": "^1.4.0"
 	},
-	"pre-commit": "lint",
 	"license": "MIT"
 }
