@@ -13,6 +13,7 @@ root.render(
 		<Theme accentColor="grass">
 			<Home />
 			<ChatBot />
+			something else
 		</Theme>
 	</React.StrictMode>,
 );

@@ -1,19 +1,26 @@
 {
-    "name": "ts-fb-monorepo",
-    "version": "0.0.1",
-    "workspaces": [
-        "web",
-        "functions"
-    ],
-    "scripts": {
-        "build": "npm run build --workspaces",
-        "test": "npm run test --workspaces",
-        "dev": "npm run dev --workspaces",
-        "start": "npm run start --workspaces",
-        "lint": "npm run lint --workspaces"
-    },
-    "dependencies": {
-        "firebase": "^10.12.1",
-        "firebase-tools": "^13.10.0"
+  "name": "ts-fb-monorepo",
+  "version": "0.0.1",
+  "workspaces": [
+    "web",
+    "functions"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "dev": "npm run dev --workspaces",
+    "start": "npm run start --workspaces",
+    "lint": "npm run lint --workspaces",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "firebase": "^10.12.1",
+    "firebase-tools": "^13.10.0",
+    "husky": "^9.0.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
     }
+  }
 }
