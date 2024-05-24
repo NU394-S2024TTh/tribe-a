@@ -11,16 +11,11 @@
     "dev": "npm run dev --workspaces",
     "start": "npm run start --workspaces",
     "lint": "npm run lint --workspaces",
-    "prepare": "husky"
+    "prepare": "node .husky/install.mjs"
   },
   "dependencies": {
     "firebase": "^10.12.1",
     "firebase-tools": "^13.10.0",
     "husky": "^9.0.11"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
   }
 }
