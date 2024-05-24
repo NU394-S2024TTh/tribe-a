@@ -2,6 +2,8 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on merge
+env:
+  HUSKY: 0  # HUSKY=0 is used to disable Husky hooks in the CI environment
 on:
   push:
     branches:
