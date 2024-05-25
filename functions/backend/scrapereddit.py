@@ -1,17 +1,32 @@
 import praw
 import json
+
 # Reddit API credentials
 client_id = 'CLIENT-ID'
 client_secret = 'CLIENT-SECRET'
 user_agent = 'USER-AGENT'
+
 # Initialize Reddit instance
-reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent=user_agent)
+try:
+    reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent=user_agent)
+except Exception as e:
+    print(f"Error initializing Reddit instance: {e}")
+    exit(1)
 
 def scrape_reddit_reviews(show_name, post_url):
-    submission = reddit.submission(url=post_url)
+    try:
+        submission = reddit.submission(url=post_url)
+    except Exception as e:
+        print("Submission not found.")
+        return []
     
     # Ensure that all comments are loaded
-    submission.comments.replace_more(limit=None)    
+    try:
+        submission.comments.replace_more(limit=None)
+    except Exception as e:
+        print(f"Error loading comments: {e}")
+        return []
+        
     reviews = []
     
     for review in submission.comments.list():
