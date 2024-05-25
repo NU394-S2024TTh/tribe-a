@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def scrape_rotten_tomatoes_reviews(movie_name, output_json):
+def scrape_rotten_tomatoes_reviews(movie_name = 'star_trek_picard', output_json = 'tomato_reviews.json'):
     options = Options()
     options.add_argument('--headless')  # Optional for headless mode
     options.add_argument('--disable-gpu')
@@ -23,7 +23,7 @@ def scrape_rotten_tomatoes_reviews(movie_name, output_json):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     # URL of the review page
-    url = 'https://www.rottentomatoes.com/tv/star_trek_picard/s03/reviews?type=user'
+    url = 'https://www.rottentomatoes.com/tv/'+ movie_name + '/s03/reviews?type=user'
 
     # Navigate to the review page
     driver.get(url)
@@ -33,16 +33,16 @@ def scrape_rotten_tomatoes_reviews(movie_name, output_json):
 
 
     wait = WebDriverWait(driver, 10)
+    # count=0
     while True:
         try:
-            load_more_container = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.load-more-container')))
+            load_more_container = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'load-more-container')))
             load_more_button = load_more_container.find_element(By.CSS_SELECTOR, 'rt-button[data-qa="load-more-btn"]')
-            # load_more_button.click()
-            # load_more_button = driver.find_element(By.XPATH, '//button[text()="Load More"]')
-            if load_more_button.is_displayed():
-                load_more_button.click()
-                print("found it")
-                time.sleep(2)
+            load_more_button.click()
+            # print("click it")
+            # count += 1
+            # print(count)
+            time.sleep(2)
         except:
             print("no such button")
             break
@@ -53,13 +53,9 @@ def scrape_rotten_tomatoes_reviews(movie_name, output_json):
     # Extract review data
     reviews = []
     review_elements = soup.select('div.audience-review-row')
-    # print(review_elements)
-    # count = 0
+
     for review_element in review_elements:
-        # if count > 3:
-        #     break
         review = {}
-        # count += 1
         
         review['review content'] = review_element.select_one('.audience-reviews__review.js-review-text').text.strip()
         review['time published'] = review_element.select_one('.audience-reviews__duration').text.strip()
@@ -67,10 +63,7 @@ def scrape_rotten_tomatoes_reviews(movie_name, output_json):
         filled_stars = len(rating_element.select('.star-display__filled'))
         half_stars = len(rating_element.select('.star-display__half'))
         review['rating data'] = filled_stars + 0.5 * half_stars
-        # review['episode_info'] = review_element.select_one('div.review_desc span.subtle').text.strip()
-        # rating_element = review_element.select_one('div.review_desc div.review_icon')
-        # review['rating_data'] = rating_element.find('span')['class'][1] if rating_element else None
-        
+
         review['episode info'] = "Season" + "3" + "Episode" + "ALL"
         # print(review)
         reviews.append(review)

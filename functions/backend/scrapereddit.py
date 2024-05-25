@@ -4,7 +4,6 @@ import json
 client_id = 'CLIENT-ID'
 client_secret = 'CLIENT-SECRET'
 user_agent = 'USER-AGENT'
-
 # Initialize Reddit instance
 reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent=user_agent)
 
