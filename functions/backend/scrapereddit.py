@@ -15,7 +15,7 @@ def scrape_reddit_reviews(show_name, post_url):
     submission.comments.replace_more(limit=None)    
     reviews = []
     
-    for review in submission.comments:
+    for review in submission.comments.list():
         # Filter comments
 
         # Format as JSON
