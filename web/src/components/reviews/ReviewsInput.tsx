@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from 'react';
+import { ref } from "firebase/database";
+import { database } from "./firebase.js";
+import { get, set, onValue } from "firebase/database";
+
 
 import sentimentAnalyzer from '../../processes/SentimentAnalyzer.mjs';
 
 export default function ReviewsInput() {
 	const [input, setInput] = useState<string>('');
 	const [reviews, setReviews] = useState<string[]>([]);
+	 // TODO: change ref for several kinds of reviews
 
 	// run sentiment analysis on reviews state change
 	async function handleReviewsChange(reviews: string[]) {
 		console.log('Reviews state changed: ', reviews);
 		const sentiments = await sentimentAnalyzer.getSentiments(reviews); // run sentiment analysis on reviews
-
 		for (let i = 0; i < reviews.length; i++) {
 			alert(`Review: ${reviews[i]}\nSentiment: ${sentiments[i]}`); // alert sentiment analysis results
 		}
-
+		
 		return sentiments;
 	}
+	const dbRef = ref(database, 'reviews/');
+	onValue(dbRef, (snapshot) => {
+		// from new value, then handleReviewsChange
+		const reviews = snapshot.val();
+		handleReviewsChange(reviews);
+	});
 
 	useEffect(() => {
-		handleReviewsChange(reviews);
+		set(dbRef, reviews);
 	}, [reviews]);
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

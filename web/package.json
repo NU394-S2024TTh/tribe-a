@@ -30,7 +30,7 @@
 		"clsx": "^2.1.1",
 		"deep-chat-react": "^1.4.11",
 		"depcheck": "^1.4.7",
-		"firebase": "^10.11.1",
+		"firebase": "^10.12.1",
 		"firebase-cli": "^1.2.0",
 		"firebase-tools": "^13.8.1",
 		"firestore": "^1.1.6",
