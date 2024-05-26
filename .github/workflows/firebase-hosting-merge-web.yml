@@ -2,6 +2,8 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on merge
+env:
+  HUSKY: 0  # HUSKY=0 is used to disable Husky hooks in the CI environment
 on:
   push:
     branches:
@@ -14,9 +16,9 @@ jobs:
       - name: Build and Deploy
         working-directory: ./web
         run: npm ci && npm run lint
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_STREAMING_TRENDS_AI }}
-          channelId: live
-          projectId: streaming-trends-ai
+      # - uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     repoToken: ${{ secrets.GITHUB_TOKEN }}
+      #     firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_STREAMING_TRENDS_AI }}
+      #     channelId: live
+      #     projectId: streaming-trends-ai

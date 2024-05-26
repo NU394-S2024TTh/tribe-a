@@ -2,6 +2,8 @@
 # https://github.com/firebase/firebase-tools
 
 name: Run lint on PR
+env:
+  HUSKY: 0  # HUSKY=0 is used to disable Husky hooks in the CI environment
 on: pull_request
 permissions:
   checks: write
@@ -12,7 +14,7 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v0
+      - uses: actions/checkout@v2
       - name: Install dependencies and run lint and build
         working-directory: ./web
         run: npm ci && npm run lint && npm run build

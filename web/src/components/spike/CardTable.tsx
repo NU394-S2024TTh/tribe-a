@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import UserCard from './radixcard';
+import UserCard from './RadixCard';
 
 export interface Members {
 	id: number;
@@ -8,7 +8,7 @@ export interface Members {
 	avatar: any;
 	team: string;
 }
-function Cardtable() {
+function CardTable() {
 	const groupArr: Members[] = [
 		{
 			id: 1,
@@ -104,4 +104,4 @@ function Cardtable() {
 	);
 }
 
-export default Cardtable;
+export default CardTable;

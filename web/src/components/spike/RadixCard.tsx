@@ -2,7 +2,7 @@ import '@radix-ui/themes/styles.css';
 
 import { Avatar, Box, Card, Flex, Text } from '@radix-ui/themes';
 
-import { Members } from './cardtable';
+import { Members } from './CardTable';
 
 interface memberProps {
 	member: Members;
