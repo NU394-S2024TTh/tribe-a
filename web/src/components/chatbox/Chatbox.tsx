@@ -4,14 +4,14 @@ import './Chatbox.css';
 import { Signals } from 'deep-chat/dist/types/handler';
 import { MessageContent } from 'deep-chat/dist/types/messages';
 import { DeepChat } from 'deep-chat-react';
+import { onValue } from 'firebase/database';
+import { ref } from 'firebase/database';
 
 import ai from '../../../resources/robot.png';
 import user from '../../../resources/white_user.png';
+import { database } from '../../firebase/firebaseconfig';
 import ChatBot from '../../processes/ChatBot';
 import testReviews from './testReviews';
-import { get, set, onValue } from "firebase/database";
-import { ref } from "firebase/database";
-import { database } from "./firebase.js";
 
 interface BodyMessages {
 	messages: MessageContent[];

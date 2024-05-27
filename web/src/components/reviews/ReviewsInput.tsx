@@ -1,9 +1,8 @@
+import { ref } from 'firebase/database';
+import { onValue, set } from 'firebase/database';
 import React, { useEffect, useState } from 'react';
-import { ref } from "firebase/database";
-import { database } from "./firebase.js";
-import { get, set, onValue } from "firebase/database";
 
-
+import { database } from '../../firebase/firebaseconfig';
 import sentimentAnalyzer from '../../processes/SentimentAnalyzer.mjs';
 
 export default function ReviewsInput() {
