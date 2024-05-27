@@ -1,6 +1,5 @@
 import praw
 import json
-
 # Reddit API credentials
 client_id = 'CLIENT-ID'
 client_secret = 'CLIENT-SECRET'
