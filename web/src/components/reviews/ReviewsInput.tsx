@@ -9,7 +9,6 @@ import sentimentAnalyzer from '../../processes/SentimentAnalyzer.mjs';
 export default function ReviewsInput() {
 	const [input, setInput] = useState<string>('');
 	const [reviews, setReviews] = useState<string[]>([]);
-	 // TODO: change ref for several kinds of reviews
 
 	// run sentiment analysis on reviews state change
 	async function handleReviewsChange(reviews: string[]) {
@@ -18,7 +17,6 @@ export default function ReviewsInput() {
 		for (let i = 0; i < reviews.length; i++) {
 			alert(`Review: ${reviews[i]}\nSentiment: ${sentiments[i]}`); // alert sentiment analysis results
 		}
-		
 		return sentiments;
 	}
 	const dbRef = ref(database, 'reviews/');

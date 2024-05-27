@@ -9,6 +9,9 @@ import ai from '../../../resources/robot.png';
 import user from '../../../resources/white_user.png';
 import ChatBot from '../../processes/ChatBot';
 import testReviews from './testReviews';
+import { get, set, onValue } from "firebase/database";
+import { ref } from "firebase/database";
+import { database } from "./firebase.js";
 
 interface BodyMessages {
 	messages: MessageContent[];
@@ -20,7 +23,15 @@ function Chatbox() {
 	];
 
 	const chatBot = new ChatBot();
-	chatBot.init_from_texts(testReviews);
+	chatBot.init_from_texts(testReviews); // not sure if we still need this w/ the onValue
+
+	const dbRef = ref(database, 'reviews/');
+	onValue(dbRef, (snapshot) => {
+		// from new value, then handleReviewsChange
+		const reviews = snapshot.val();
+		chatBot.init_from_texts(reviews);
+	});
+
 	async function getMessage(body: BodyMessages) {
 		console.log('body', body);
 		const text = body.messages[0].text || ''; // Add null check
