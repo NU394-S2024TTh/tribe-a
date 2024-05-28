@@ -20,7 +20,7 @@ class SentimentAnalyzer {
 		});
 
 		this.instruction =
-			'You are a helpful assistant that analyzes the sentiment of a given review or comment for a movie or a TV show on a scale of 1 to 5.';
+			'You are a helpful assistant that analyzes the sentiment of a given review or comment for a movie or a TV show on a scale of 1 to 5, to two decimal places.';
 
 		this.fewShots = [
 			['This movie is the best I have ever seen.', 5],

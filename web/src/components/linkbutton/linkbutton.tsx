@@ -3,16 +3,27 @@
 import { onValue, ref } from 'firebase/database';
 import React, { useRef, useState } from 'react';
 
-import { database } from '../../firebase/firebase';
+import { database } from '../../../firebase/firebase';
+import { Show } from '../../pages/Showlist';
+import sentimentAnalyzer from '../../processes/SentimentAnalyzer.mjs';
 import { useButtonPress } from './buttonpress';
-
 interface LinkButtonProps {
 	onDataReceived: (data: any) => void;
 	children: React.ReactNode;
 	selected: boolean;
+	numReviews: number;
+	onClickEvent: (show: Show) => void;
+	show: Show;
 }
 
-export const Linkbutton = ({ onDataReceived, children, selected }: LinkButtonProps) => {
+export const Linkbutton = ({
+	onDataReceived,
+	children,
+	selected,
+	numReviews,
+	onClickEvent,
+	show,
+}: LinkButtonProps) => {
 	const buttonRef = useRef(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
@@ -20,13 +31,20 @@ export const Linkbutton = ({ onDataReceived, children, selected }: LinkButtonPro
 	const handleButtonClick = () => {
 		setIsLoading(true);
 		setError(null);
-
+		onClickEvent(show);
 		const reviewsRef = ref(database, 'reviews');
 		onValue(
 			reviewsRef,
-			(snapshot) => {
+			async (snapshot) => {
 				const data = snapshot.val();
-				onDataReceived(data);
+				const reviews = Object.values(data)
+					.slice(0, numReviews)
+					.map((review: any) => review.content);
+
+				// Get sentiments for reviews
+				const sentiments = await sentimentAnalyzer.getSentiments(reviews);
+
+				onDataReceived(sentiments);
 				setIsLoading(false);
 			},
 			(errorObject) => {

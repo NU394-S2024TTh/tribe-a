@@ -1,35 +1,32 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
+import { json } from 'react-router-dom';
 
 import { TEST_DATA } from '../components/charts/testdata';
-import { Linkbutton } from '../components/linkbutton';
+import { Linkbutton } from '../components/linkbutton/linkbutton';
 import SentimentAnalysis from './SentimentAnalysis';
-interface DataPoint {
-	name: string;
-	number: number;
-}
 
-interface Show {
+export interface Show {
 	name: string;
-	data: DataPoint[];
 }
 
 const shows: Show[] = [
-	{ name: 'Avatar: The Last Airbender', data: TEST_DATA },
-	{ name: 'Shogun', data: TEST_DATA },
-	{ name: 'Criminal Minds', data: TEST_DATA },
-	{ name: 'Big Brother', data: TEST_DATA },
-	{ name: 'Halo', data: TEST_DATA },
+	{ name: 'Avatar: The Last Airbender' },
+	{ name: 'Shogun' },
+	{ name: 'Criminal Minds' },
+	{ name: 'Big Brother' },
+	{ name: 'Halo' },
 ];
 
 export default function ShowList({ streamingservice }: { streamingservice: string }) {
 	const [selectedShow, setSelectedShow] = useState<Show | null>(null);
 
-	const handleShowClick = (show: Show) => {
+	const handleShowClick = (show: Show): void => {
 		setSelectedShow(show);
 	};
-	const [showReviews, setShowReviews] = useState<any>(null);
+
+	const [reviewData, setReviewData] = useState<any>(null);
 	return (
 		<div className="flex min-h-screen bg-[#132a3a]">
 			<div className="w-1/3 p-8">
@@ -39,7 +36,10 @@ export default function ShowList({ streamingservice }: { streamingservice: strin
 						<li key={show.name} className="rounded-lg">
 							<Linkbutton
 								selected={selectedShow?.name === show.name}
-								onDataReceived={setShowReviews}
+								onDataReceived={setReviewData}
+								numReviews={40}
+								onClickEvent={handleShowClick}
+								show={show}
 							>
 								{show.name}
 							</Linkbutton>
@@ -49,9 +49,11 @@ export default function ShowList({ streamingservice }: { streamingservice: strin
 			</div>
 			<div className="w-2/3 p-8">
 				{selectedShow ? (
-					<SentimentAnalysis showName={selectedShow.name} data={selectedShow.data} />
+					<div>
+						<SentimentAnalysis showName={selectedShow.name} data={reviewData} />
+					</div>
 				) : (
-					<div className="flex items-center justify-center text-white">
+					<div className="flex h-full items-center justify-center text-white">
 						<p>Select a show to view its sentiment analysis.</p>
 					</div>
 				)}
