@@ -16,6 +16,8 @@
 		"type-check": "tsc"
 	},
 	"dependencies": {
+		"@langchain/core": "^0.2.2",
+		"@langchain/openai": "^0.0.34",
 		"@mui/icons-material": "^5.15.16",
 		"@mui/material": "^5.15.16",
 		"@mui/styled-engine": "^5.15.14",
@@ -26,10 +28,13 @@
 		"@radix-ui/themes": "^3.0.3",
 		"@tailwindcss/forms": "^0.5.7",
 		"autoprefixer": "^10.4.19",
+		"axios": "^1.7.2",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
+		"deep-chat": "^1.4.11",
 		"deep-chat-react": "^1.4.11",
 		"depcheck": "^1.4.7",
+		"firebase": "^10.12.2",
 		"firestore": "^1.1.6",
 		"langchain": "^0.1.36",
 		"next": "^14.2.3",

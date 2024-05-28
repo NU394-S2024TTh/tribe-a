@@ -75,6 +75,7 @@ export default function Tabs({ data }: data) {
 		if (JSON.stringify(data) != JSON.stringify([[[1]]])) {
 			setUpdated(true);
 		}
+		console.log(data);
 	}, [data]);
 	return (
 		<RootWrapper>
@@ -95,7 +96,7 @@ export default function Tabs({ data }: data) {
 						key={`tab-content-${value}`}
 						value={value}
 						className={clsx('rounded-b-lg px-6 py-4', {
-							'bg-white dark:bg-gray-800': true, // Add background color classes here
+							'bg-white dark:bg-gray-800': true,
 						})}
 					>
 						{(() => {
@@ -103,7 +104,6 @@ export default function Tabs({ data }: data) {
 								let tabData: reviewitem[] = [];
 
 								if (data && Array.isArray(data)) {
-									// Determine which tab's data to use based on the 'value'
 									switch (value) {
 										case 'tab1':
 											tabData = cdfcalc(formatData(data), 15);
@@ -116,15 +116,13 @@ export default function Tabs({ data }: data) {
 								if (value == 'tab1') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-											<AreaGraph receivedData={tabData} empty={!updated} />
-											{/* <div>{JSON.stringify(tabData)}</div> THIS IS FOR DEBUGGING TO SEE THE RAW JSON DATA*/}
+											<AreaGraph receivedData={tabData} empty={updated} />
 										</div>
 									);
 								} else if (value == 'tab2') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-											<BarGraph receivedData={siteData} empty={!updated} />
-											{/* <div>{JSON.stringify(tabData)}</div> THIS IS FOR DEBUGGING TO SEE THE RAW JSON DATA*/}
+											<BarGraph receivedData={siteData} empty={updated} />
 										</div>
 									);
 								}

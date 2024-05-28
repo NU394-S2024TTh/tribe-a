@@ -41,7 +41,6 @@ export const Linkbutton = ({
 					.slice(0, numReviews)
 					.map((review: any) => review.content);
 
-				// Get sentiments for reviews
 				const sentiments = await sentimentAnalyzer.getSentiments(reviews);
 
 				onDataReceived(sentiments);
