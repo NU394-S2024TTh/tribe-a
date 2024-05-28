@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 
 import { TEST_DATA } from '../components/charts/testdata';
+import { Linkbutton } from '../components/linkbutton';
 import SentimentAnalysis from './SentimentAnalysis';
-
 interface DataPoint {
 	name: string;
 	number: number;
@@ -14,7 +15,7 @@ interface Show {
 }
 
 const shows: Show[] = [
-	{ name: 'Yellowjackets', data: TEST_DATA },
+	{ name: 'Avatar: The Last Airbender', data: TEST_DATA },
 	{ name: 'Shogun', data: TEST_DATA },
 	{ name: 'Criminal Minds', data: TEST_DATA },
 	{ name: 'Big Brother', data: TEST_DATA },
@@ -27,7 +28,7 @@ export default function ShowList({ streamingservice }: { streamingservice: strin
 	const handleShowClick = (show: Show) => {
 		setSelectedShow(show);
 	};
-
+	const [showReviews, setShowReviews] = useState<any>(null);
 	return (
 		<div className="flex min-h-screen bg-[#132a3a]">
 			<div className="w-1/3 p-8">
@@ -35,16 +36,12 @@ export default function ShowList({ streamingservice }: { streamingservice: strin
 				<ul className="space-y-4">
 					{shows.map((show) => (
 						<li key={show.name} className="rounded-lg">
-							<button
-								className={`w-full cursor-pointer rounded-lg px-4 py-2 text-left text-xl text-white ${
-									selectedShow?.name === show.name
-										? 'bg-[#10d48e]'
-										: 'bg-[#204a5e] hover:bg-[#2a6a83]'
-								}`}
-								onClick={() => handleShowClick(show)}
+							<Linkbutton
+								selected={selectedShow?.name === show.name}
+								onDataReceived={setShowReviews}
 							>
 								{show.name}
-							</button>
+							</Linkbutton>
 						</li>
 					))}
 				</ul>
