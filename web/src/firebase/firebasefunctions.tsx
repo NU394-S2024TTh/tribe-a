@@ -1,24 +1,19 @@
 // firebasefunctions.tsx
 
-import { db } from './firebaseconfig';
-import { collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore';
-import axios from 'axios';
+import { database } from './firebaseconfig';
+import { ref, get, child, set } from 'firebase/database';
 
-// Utility function to check if the show exists in Firestore
+// Utility function to check if the show exists in Realtime Database
 async function checkShowExists(showName: string): Promise<{ exists: boolean, data?: any }> {
-  const showsRef = collection(db, 'shows');
-  const q = query(showsRef, where('name', '==', showName));
-  const querySnapshot = await getDocs(q);
+  const dbRef = ref(database);
+  const snapshot = await get(child(dbRef, `shows/${showName}`));
 
-  if (querySnapshot.empty) {
-    return { exists: false };
-  } else {
-    let showData: any;
-    querySnapshot.forEach((doc) => {
-      showData = doc.data();
-      console.log(showData);
-    });
+  if (snapshot.exists()) {
+    const showData = snapshot.val();
+    console.log(showData);
     return { exists: true, data: showData };
+  } else {
+    return { exists: false };
   }
 }
 
@@ -32,7 +27,7 @@ async function getReviews(showName: string): Promise<any> {
     console.log(`Show ${showName} not found in the database. Calling Lambda function to scrape and save data.`);
     
     // Call the Lambda function to scrape data
-    
+
 
     // Recheck if the show now exists in the database
     const recheck = await checkShowExists(showName);
