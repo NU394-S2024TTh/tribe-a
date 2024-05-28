@@ -7,6 +7,263 @@ function generateTestData(numbers: number[]) {
 	});
 }
 
+export const TEST_DATA_FB_FORMAT = {
+	"reviews": {
+		"01_tomato_breaking_bad_6": {
+			"author": "Michael Scott",
+			"content": "Breaking bad is a compelling story of a high school chemistry teacher turned methamphetamine manufacturing drug dealer, with gripping storytelling and character development that keeps you on the edge of your seat.",
+			"created": "Apr 10, 2000",
+			"rating": 3.5,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Recommended",
+			"type": "Human"
+		},
+		"02_tomato_breaking_bad_6": {
+			"author": "Dwight Schrute",
+			"content": "It is a must watch for anyone who loves crime dramas. The show is a perfect blend of drama, action, and comedy. The characters are well developed and the story is engaging. Highly recommended.",
+			"created": "May 11, 2000",
+			"rating": 4.5,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Highly Recommended",
+			"type": "Human"
+		},
+		"03_tomato_breaking_bad_6": {
+			"author": "Pam Beesly",
+			"content": "Breaking Bad is a great show that keeps you on the edge of your seat. The story is well written and the characters are well developed. The show is a must watch for anyone who loves crime dramas.",
+			"created": "Jun 12, 2000",
+			"rating": 4,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Highly Recommended",
+			"type": "Human"
+		},
+		"04_tomato_breaking_bad_6": {
+			"author": "Jim Halpert",
+			"content": "I was really looking forward to watching Breaking Bad, but I was disappointed. The story is slow and the characters are not well developed. The show is not worth watching.",
+			"created": "Jul 13, 2000",
+			"rating": 2,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Disappointing",
+			"type": "Human"
+		},
+		"05_tomato_breaking_bad_6": {
+			"author": "Andy Bernard",
+			"content": "We all know that Breaking Bad is a great show, but it is not for everyone. The show is dark and intense, and the characters are not very likable. I would recommend it to anyone who loves crime dramas.",
+			"created": "Aug 14, 2000",
+			"rating": 4,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Highly Recommended",
+			"type": "Human"
+		},
+		"06_tomato_breaking_bad_6": {
+			"author": "Angela Martin",
+			"content": "I've been watching Breaking Bad since the beginning and it just keeps getting better and better. The writing is superb and the acting is top-notch. This show is a must-watch for any TV enthusiast.",
+			"created": "Sep 15, 2000",
+			"rating": 5,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Outstanding",
+			"type": "Human"
+		},
+		"07_tomato_breaking_bad_6": {
+			"author": "Kevin Malone",
+			"content": "Breaking Bad is one of the best shows I've ever watched. The story is gripping and the characters are so well developed. I can't wait to see how it all ends.",
+			"created": "Oct 16, 2000",
+			"rating": 4.5,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Amazing",
+			"type": "Human"
+		},
+		"08_tomato_breaking_bad_6": {
+			"author": "Creed Bratton",
+			"content": "This show is an absolute thrill ride from start to finish. The evolution of the main character is both disturbing and captivating.",
+			"created": "Apr 10, 2000",
+			"rating": 4.5,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Unmissable",
+			"type": "Human"
+		},
+		"09_tomato_breaking_bad_6": {
+			"author": "Oscar Martinez",
+			"content": "The narrative complexity of Breaking Bad is unmatched. It’s a brilliant showcase of how to mix moral conundrums with intense drama.",
+			"created": "May 11, 2000",
+			"rating": 4.8,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Masterpiece",
+			"type": "Human"
+		},
+		"10_tomato_breaking_bad_6": {
+			"author": "Phyllis Vance",
+			"content": "Every episode leaves you wanting more. The tension and pacing are perfect. It's a heart-pounding experience.",
+			"created": "Jun 12, 2000",
+			"rating": 4.2,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Edge of Your Seat",
+			"type": "Human"
+		},
+		"11_tomato_breaking_bad_6": {
+			"author": "Stanley Hudson",
+			"content": "The show starts strong but sometimes feels repetitive. It's good, but not the best I've seen.",
+			"created": "Jul 13, 2000",
+			"rating": 3.0,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Somewhat Repetitive",
+			"type": "Human"
+		},
+		"12_tomato_breaking_bad_6": {
+			"author": "Meredith Palmer",
+			"content": "Raw and intense, Breaking Bad delivers a cinematic experience in every episode. It's definitely not for the faint of heart.",
+			"created": "Aug 14, 2000",
+			"rating": 4.7,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Intense",
+			"type": "Human"
+		},
+		"13_tomato_breaking_bad_6": {
+			"author": "Kelly Kapoor",
+			"content": "The drama is good, but I wish there were more relatable characters. It's hard to find someone to root for.",
+			"created": "Sep 15, 2000",
+			"rating": 3.8,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Needs More Heart",
+			"type": "Human"
+		},
+		"14_tomato_breaking_bad_6": {
+			"author": "Ryan Howard",
+			"content": "Breaking Bad redefines the crime drama genre with its innovative storytelling and complex characters.",
+			"created": "Oct 16, 2000",
+			"rating": 4.9,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Redefines the Genre",
+			"type": "Human"
+		},
+		"15_tomato_breaking_bad_6": {
+			"author": "Toby Flenderson",
+			"content": "It's well-made, but sometimes the moral ambiguity of the protagonist is too unsettling.",
+			"created": "Apr 10, 2000",
+			"rating": 3.5,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Morally Unsettling",
+			"type": "Human"
+		},
+		"16_tomato_breaking_bad_6": {
+			"author": "Jan Levinson",
+			"content": "Absolutely gripping! The show brilliantly explores the darkness of its characters.",
+			"created": "May 11, 2000",
+			"rating": 5,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Gripping and Dark",
+			"type": "Human"
+		},
+		"17_tomato_breaking_bad_6": {
+			"author": "David Wallace",
+			"content": "Breaking Bad is an example of television at its best. The storytelling is precise and captivating.",
+			"created": "Jun 12, 2000",
+			"rating": 4.6,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Television at Its Best",
+			"type": "Human"
+		},
+		"18_tomato_breaking_bad_6": {
+			"author": "Roy Anderson",
+			"content": "I find the show too dark and the pacing slow, not my cup of tea.",
+			"created": "Jul 13, 2000",
+			"rating": 2.5,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Too Dark",
+			"type": "Human"
+		},
+		"19_tomato_breaking_bad_6": {
+			"author": "Darryl Philbin",
+			"content": "Breaking Bad mixes brilliant acting with a compelling story that’s both unpredictable and satisfying.",
+			"created": "Aug 14, 2000",
+			"rating": 4.3,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Unpredictable and Satisfying",
+			"type": "Human"
+		},
+		"20_tomato_breaking_bad_6": {
+			"author": "Holly Flax",
+			"content": "The emotional depth in Breaking Bad is incredible. Each character's journey is beautifully portrayed.",
+			"created": "Sep 15, 2000",
+			"rating": 4.4,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Emotionally Deep",
+			"type": "Human"
+		},
+		"21_tomato_breaking_bad_6": {
+			"author": "Michael Scott",
+			"content": "Absolutely a game-changer in the landscape of TV shows. It's thrilling, emotional, and impeccably produced.",
+			"created": "Oct 16, 2000",
+			"rating": 4.8,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Game Changer",
+			"type": "Human"
+		},
+		"22_tomato_breaking_bad_6": {
+			"author": "Gabe Lewis",
+			"content": "While the show is critically acclaimed, I find the heavy themes a bit too much to handle.",
+			"created": "Apr 10, 2000",
+			"rating": 3.2,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Overwhelming Themes",
+			"type": "Human"
+		},
+		"23_tomato_breaking_bad_6": {
+			"author": "Todd Packer",
+			"content": "If you love intense dramas, this is it. It's raw, gritty, and has no dull moments.",
+			"created": "May 11, 2000",
+			"rating": 4.1,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Raw and Gritty",
+			"type": "Human"
+		},
+		"24_tomato_breaking_bad_6": {
+			"author": "Pam Beesly",
+			"content": "This show is a masterclass in storytelling. It’s complex, intriguing, and always entertaining.",
+			"created": "Jun 12, 2000",
+			"rating": 4.9,
+			"show": "breaking_bad_6",
+			"source": "Rotten Tomato",
+			"title": "Masterclass in Storytelling",
+			"type": "Human"
+		}
+	},
+	"shows": {
+		"breaking_bad_6": {
+			"category": "Crime",
+			"name": "Breaking Bad",
+			"release_date": "Apr 2, 2000",
+			"review_ids": [
+				"01_tomato_breaking_bad",
+				"02_tomato_breaking_bad"
+			],
+			"season": 6
+		}
+	}
+};
+
 export const TEST_DATA = generateTestData([
 	3.8576624536149833, 4.8589676776239905, 3.3464633160633093, 4.23983456034865,
 	4.591481824812644, 3.3299948568927826, 4.19635966480689, 3.6899531645708725,
