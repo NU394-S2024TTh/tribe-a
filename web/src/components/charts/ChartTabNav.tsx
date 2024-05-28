@@ -7,8 +7,8 @@ import * as TabsPrimitive from '../primitives/Tabs';
 import AreaGraph from './AreaGraph';
 import { cdfcalc, numsorter } from './CDF';
 import BarGraph from './LiveGraph';
+import { TEST_DATA_FB_FORMAT } from './testdata';
 import TrendAnalysis from './TrendGraph';
-import { TEST_DATA_FB_FORMAT } from './testdata'
 
 interface Tab {
 	title: string;
@@ -28,8 +28,8 @@ const tabs: Tab[] = [
 	},
 	{
 		title: 'Trend Analysis',
-		value: 'tab3'
-	}
+		value: 'tab3',
+	},
 ];
 
 export interface reviewitem {
@@ -151,11 +151,13 @@ export default function Tabs({ data }: data) {
 								} else if (value == 'tab3') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-										  <TrendAnalysis jsonData={TEST_DATA_FB_FORMAT} showName="breaking_bad_6" />
+											<TrendAnalysis
+												jsonData={TEST_DATA_FB_FORMAT}
+												showName="breaking_bad_6"
+											/>
 										</div>
-									  );
+									);
 								}
-								
 							} catch (error) {
 								console.error(error);
 								return <div></div>;
