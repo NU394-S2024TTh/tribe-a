@@ -37,9 +37,8 @@ export const Linkbutton = ({
 			reviewsRef,
 			async (snapshot) => {
 				const data = snapshot.val();
-				const reviews = Object.values(data)
-					.slice(0, numReviews);
-					//.map((review: any) => review.content);
+				const reviews = Object.values(data).slice(0, numReviews);
+				//.map((review: any) => review.content);
 
 				// Get sentiments for reviews
 				console.log(reviews);

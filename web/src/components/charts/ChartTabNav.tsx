@@ -28,7 +28,7 @@ const tabs: Tab[] = [
 	{
 		title: 'Trend Analysis',
 		value: 'tab3',
-	}
+	},
 ];
 
 export interface reviewitem {
@@ -41,14 +41,14 @@ export interface data {
 }
 
 interface TabsProps {
-    data: { sentiment: number; created: string }[];
+	data: { sentiment: number; created: string }[];
 }
 
 function formatData(reviews: { sentiment: number; created: string }[]) {
-    return reviews.map((review, index) => ({
-        name: (index + 1).toString(),
-        number: review.sentiment,
-    }));
+	return reviews.map((review, index) => ({
+		name: (index + 1).toString(),
+		number: review.sentiment,
+	}));
 }
 
 const siteData = [
@@ -139,12 +139,12 @@ export default function Tabs({ data }: TabsProps) {
 										</div>
 									);
 								} else if (value === 'tab3') {
-                                    return (
-                                        <div className="mt-10 flex w-full flex-col items-center justify-center">
-                                            <TrendAnalysis data={data} />
-                                        </div>
-                                    );
-                                }
+									return (
+										<div className="mt-10 flex w-full flex-col items-center justify-center">
+											<TrendAnalysis data={data} />
+										</div>
+									);
+								}
 							} catch (error) {
 								console.error(error);
 								return <div></div>;
