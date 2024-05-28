@@ -24,7 +24,14 @@ def scrape_rotten_tomatoes_reviews(movie_name = 'star_trek_picard'):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     output_json = 'tomato_reviews_' + movie_name
     season = 0
+    review_id = 1
+    shows_metadata = {}
+    reviews = {}
+   
+
+
     while True:
+            
             season += 1
             # URL of the review page
             url = 'https://www.rottentomatoes.com/tv/' + movie_name + '/s0' + str(season) + '/reviews?type=user'
@@ -58,38 +65,53 @@ def scrape_rotten_tomatoes_reviews(movie_name = 'star_trek_picard'):
 
             # Parse the page HTML
             soup = BeautifulSoup(driver.page_source, 'html.parser')
+            air_date = None
+            genre = None
+            info_section = soup.select_one('.info-section')
+            if info_section:
+                details = info_section.select('ul[data-qa="sidebar-tv-details"] li')
+                for detail in details:
+                    if 'Air Date' in detail.text:
+                        air_date = detail.text.replace('Air Date: ', '').strip()
+                    elif 'Genre' in detail.text:
+                        genre = detail.text.replace('Genre: ', '').strip()
+            
+
+
 
             # Extract review data
-            reviews = []
+            
             review_elements = soup.select('div.audience-review-row')
-
+            reviews_per_season = []
             for review_element in review_elements:
                 review = {}
-                
-                review['review'] = review_element.select_one('.audience-reviews__review.js-review-text').text.strip()
-                review['date'] = review_element.select_one('.audience-reviews__duration').text.strip()
+                review['source'] = "Rotten Tomato"
+                author_element = review_element.select_one('.audience-reviews__name')
+                review['author'] = author_element.text.strip() if author_element else "Unknown"
+                review['type'] = "Human"
+                review['created'] = review_element.select_one('.audience-reviews__duration').text.strip()
+                review['content'] = review_element.select_one('.audience-reviews__review.js-review-text').text.strip()
                 rating_element = review_element.select_one('.star-display')
                 filled_stars = len(rating_element.select('.star-display__filled'))
                 half_stars = len(rating_element.select('.star-display__half'))
                 review['rating'] = filled_stars + 0.5 * half_stars
+                review['title'] = ""
+                review['show'] = movie_name + "_" + str(season)
+                review_key = f"{str(review_id).zfill(2)}_tomato_{movie_name}_{season}"
+                reviews[review_key] = review
+                reviews_per_season.append(review_key)
+                review_id += 1
 
-                review['episode info'] = "Season " + str(season)
-                # print(review)
-                reviews.append(review)
-
-            # Create a DataFrame from the reviews
-            # df = pd.DataFrame(reviews)
-            with open(output_json_by_season, 'w') as json_file:
-                json.dump({f"{movie_name}": reviews}, json_file, indent=2)
-
-            # except (NoSuchElementException, TimeoutException):
-            #     print(f"Page for season {season} does not exist. Exiting loop.")
-            #     break
-
-    # Print the DataFrame
-    # print(df)
-
-    # Close the webdriver
+            show_info = {
+                "name": movie_name,
+                "season": season,  # You can update this with actual season information if available
+                "category": genre if genre else "Unknown",
+                "release_date": air_date if air_date else "Unknown",
+                "review_ids": reviews_per_season
+            }
+            shows_metadata[f"{movie_name}_{season}"] = show_info
+    with open('all.json', 'w') as shows_file:
+        json.dump({"shows": shows_metadata,"reviews": reviews}, shows_file, indent=2)
     driver.quit()
 
 
