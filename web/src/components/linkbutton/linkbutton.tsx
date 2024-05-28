@@ -38,11 +38,13 @@ export const Linkbutton = ({
 			async (snapshot) => {
 				const data = snapshot.val();
 				const reviews = Object.values(data)
-					.slice(0, numReviews)
-					.map((review: any) => review.content);
+					.slice(0, numReviews);
+					//.map((review: any) => review.content);
 
 				// Get sentiments for reviews
-				const sentiments = await sentimentAnalyzer.getSentiments(reviews);
+				console.log(reviews);
+				const sentiments = await sentimentAnalyzer.getDatedSentiments(reviews);
+				console.log(sentiments);
 
 				onDataReceived(sentiments);
 				setIsLoading(false);
