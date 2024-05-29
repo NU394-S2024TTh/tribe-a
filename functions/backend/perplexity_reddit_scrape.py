@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from scrapereddit import scrape_reddit_reviews
 
 author = "author"
@@ -30,13 +31,12 @@ for key in all_urls:
     for a_url in urls:
         all_reviews = scrape_reddit_reviews(key, a_url)
 
-        scraped_ratings_dict[key] = {}
         for a_rating in all_reviews:
             review_key = str(i) + review_key_suffix
             scraped_ratings_dict[review_key] = {}
             scraped_ratings_dict[review_key][author] = a_rating["user_demographic_data"]["author"]
             scraped_ratings_dict[review_key][content] = a_rating["review_content"]
-            scraped_ratings_dict[review_key][created] = a_rating["time_published"]
+            scraped_ratings_dict[review_key][created] = str(datetime.fromtimestamp(int(float(a_rating["time_published"]))).strftime("%B %d, %Y"))
             scraped_ratings_dict[review_key][rating] = ""
             scraped_ratings_dict[review_key][show] = key
             scraped_ratings_dict[review_key][source] = "Reddit"
