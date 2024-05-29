@@ -41,7 +41,7 @@ export const Linkbutton = ({
 				//.map((review: any) => review.content);
 
 				// Get sentiments for reviews
-				console.log(reviews);
+				console.log("GETTING DATED SENTIMENTS")
 				const sentiments = await sentimentAnalyzer.getDatedSentiments(reviews);
 				console.log(sentiments);
 
