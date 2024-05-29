@@ -106,7 +106,6 @@ export default function TrendAnalysis({ data }: TrendAnalysisProps) {
 					<Label value="Sentiment" angle={-90} position="left" offset={-10} />
 				</YAxis>
 				<Tooltip content={<CustomTooltip />} />
-				<Legend />
 				<Line
 					type="monotone"
 					dataKey="averageRating"
