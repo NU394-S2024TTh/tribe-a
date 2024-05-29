@@ -13,7 +13,7 @@ import { ChatOpenAI } from '@langchain/openai';
 class SentimentAnalyzer {
 	constructor(apiKey) {
 		this.model = new ChatOpenAI({
-			modelName: 'gpt-4',
+			modelName: 'gpt-3.5-turbo',
 			maxOutputTokens: 2048,
 			openAIApiKey: apiKey,
 			temperature: 0.0,

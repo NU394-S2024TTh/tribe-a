@@ -34,8 +34,8 @@ export default function AreaGraph({ receivedData, empty }: AreaGraphProps) {
 	if (empty) {
 		return (
 			<div className="max-h-[400px] min-h-[400px] min-w-[160px] max-w-[160px] items-center justify-center">
-				<p className="mt-[50px] text-center text-[#c6bed4]">Sorry,</p>
-				<p className="mt-[75px] text-center text-[#281c34]">There`s no data.</p>
+				<p className="mt-[50px] text-center text-[#268b07]">Sorry,</p>
+				<p className="mt-[75px] text-center text-[#281c34]">There&apos;s no data.</p>
 			</div>
 		);
 	}
@@ -58,7 +58,7 @@ export default function AreaGraph({ receivedData, empty }: AreaGraphProps) {
 					tick={{ fill: '#49565f' }}
 				/>
 
-				<Tooltip content={<CustomTooltip />} />
+				<Tooltip content={<CustomTooltip active={empty} />} />
 				<CartesianGrid opacity={0.4} vertical={false} />
 			</AreaChart>
 		</ResponsiveContainer>

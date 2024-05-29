@@ -40,8 +40,12 @@ export const Linkbutton = ({
 				const reviews = Object.values(data).slice(0, numReviews);
 				//.map((review: any) => review.content);
 
+<<<<<<< trend-analysis-integrated
 				// Get sentiments for reviews
 				const sentiments = await sentimentAnalyzer.getDatedSentiments(reviews);
+=======
+				const sentiments = await sentimentAnalyzer.getSentiments(reviews);
+>>>>>>> main
 
 				onDataReceived(sentiments);
 				setIsLoading(false);
