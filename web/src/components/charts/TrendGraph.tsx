@@ -2,7 +2,6 @@ import React from 'react';
 import {
 	CartesianGrid,
 	Label,
-	Legend,
 	Line,
 	LineChart,
 	ResponsiveContainer,
