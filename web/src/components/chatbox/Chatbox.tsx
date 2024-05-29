@@ -4,20 +4,17 @@ import './Chatbox.css';
 import { Signals } from 'deep-chat/dist/types/handler';
 import { MessageContent } from 'deep-chat/dist/types/messages';
 import { DeepChat } from 'deep-chat-react';
+import { useEffect } from 'react';
 
 import ai from '../../../resources/robot.png';
 import user from '../../../resources/white_user.png';
 import NewChatBot from '../../processes/NewChatbot';
-import testReviews from './testReviews';
-
-import { useEffect } from 'react';
 
 interface BodyMessages {
 	messages: MessageContent[];
 }
 
 function Chatbox() {
-
 	const initialMessages = [
 		{ role: 'ai', text: 'Ask me anything about movie recommendations!' },
 	];
@@ -25,9 +22,8 @@ function Chatbox() {
 	const chatBot = new NewChatBot();
 	// Only call init_from_texts once upon first page load
 	useEffect(() => {
-		chatBot.init_from_texts(testReviews);
-	}
-		, []);
+		chatBot.init_from_texts();
+	}, []);
 
 	async function getMessage(body: BodyMessages) {
 		console.log('body', body);
