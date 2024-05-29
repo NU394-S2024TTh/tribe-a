@@ -7,25 +7,33 @@ import { DeepChat } from 'deep-chat-react';
 
 import ai from '../../../resources/robot.png';
 import user from '../../../resources/white_user.png';
-import ChatBot from '../../processes/ChatBot';
+import NewChatBot from '../../processes/NewChatbot';
 import testReviews from './testReviews';
+
+import { useEffect } from 'react';
 
 interface BodyMessages {
 	messages: MessageContent[];
 }
 
 function Chatbox() {
+
 	const initialMessages = [
 		{ role: 'ai', text: 'Ask me anything about movie recommendations!' },
 	];
 
-	const chatBot = new ChatBot();
-	chatBot.init_from_texts(testReviews);
+	const chatBot = new NewChatBot();
+	// Only call init_from_texts once upon first page load
+	useEffect(() => {
+		chatBot.init_from_texts(testReviews);
+	}
+		, []);
+
 	async function getMessage(body: BodyMessages) {
 		console.log('body', body);
 		const text = body.messages[0].text || ''; // Add null check
-		const retrieved = await chatBot.get_relevant_documents(text);
-		console.log(retrieved);
+		// const retrieved = await chatBot.get_relevant_documents(text);
+		// console.log(retrieved);
 		const resultOne = await chatBot.ask_question(text);
 		console.log({ resultOne });
 		console.log(JSON.stringify(resultOne.result, null, 2));
