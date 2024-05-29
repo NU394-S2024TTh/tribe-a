@@ -6,9 +6,15 @@ import { MessageContent } from 'deep-chat/dist/types/messages';
 import { DeepChat } from 'deep-chat-react';
 import { useEffect } from 'react';
 
+import NewChatBot from '../../processes/NewChatbot';
+import { onValue } from 'firebase/database';
+import { ref } from 'firebase/database';
+
 import ai from '../../../resources/robot.png';
 import user from '../../../resources/white_user.png';
-import NewChatBot from '../../processes/NewChatbot';
+import { database } from '../../firebase/firebaseconfig';
+import ChatBot from '../../processes/ChatBot';
+import testReviews from './testReviews';
 
 interface BodyMessages {
 	messages: MessageContent[];
@@ -24,6 +30,12 @@ function Chatbox() {
 	useEffect(() => {
 		chatBot.init_from_texts();
 	}, []);
+	const dbRef = ref(database, 'reviews/');
+	// onValue(dbRef, (snapshot) => {
+	// 	// from new value, then handleReviewsChange
+	// 	const reviews = snapshot.val();
+		
+	// });
 
 	async function getMessage(body: BodyMessages) {
 		console.log('body', body);
