@@ -32,21 +32,17 @@ export interface reviewitem {
 }
 
 export interface data {
-	data: reviewitem[];
+	data: number[];
 }
 
-// const cdfcalc = (tabData: reviewitem[]) => {
-// 	const counts: { [key: number]: number } = {};
-
-// 	tabData.forEach(({ name, number }) => {
-// 		counts[number] = (counts[number] || 0) + 1;
-// 	});
-
-// 	return Object.entries(counts).map(([number, count]) => ({
-// 		name: number,
-// 		number: count,
-// 	}));
-// };
+function formatData(numbers: number[]) {
+	return numbers.map((num, index) => {
+		return {
+			name: (index + 1).toString(),
+			number: num,
+		};
+	});
+}
 
 const siteData = [
 	{
@@ -71,17 +67,6 @@ const siteData = [
 	},
 ];
 
-// {clsx(
-//     'group',
-//     'first:rounded-tl-lg last:rounded-tr-lg',
-//     'border-white',
-//     'border-white dark:border-white',
-//     'radix-state-active:border-white focus-visible:radix-state-active:border-white radix-state-inactive:bg-gray-50 dark:radix-state-active:border-white dark:radix-state-active:bg-gray-900 focus-visible:dark:radix-state-active:border-white dark:radix-state-inactive:bg-white',
-//     'w-full flex-1 px-3 py-2.5',
-//     'focus:radix-state-active:border-white',
-//     'focus:z-10 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75',
-// )}
-
 export default function Tabs({ data }: data) {
 	const [modData, setData] = useState(data);
 	const [updated, setUpdated] = useState(false);
@@ -90,6 +75,7 @@ export default function Tabs({ data }: data) {
 		if (JSON.stringify(data) != JSON.stringify([[[1]]])) {
 			setUpdated(true);
 		}
+		console.log(data);
 	}, [data]);
 	return (
 		<RootWrapper>
@@ -110,7 +96,7 @@ export default function Tabs({ data }: data) {
 						key={`tab-content-${value}`}
 						value={value}
 						className={clsx('rounded-b-lg px-6 py-4', {
-							'bg-white dark:bg-gray-800': true, // Add background color classes here
+							'bg-white dark:bg-gray-800': true,
 						})}
 					>
 						{(() => {
@@ -118,28 +104,25 @@ export default function Tabs({ data }: data) {
 								let tabData: reviewitem[] = [];
 
 								if (data && Array.isArray(data)) {
-									// Determine which tab's data to use based on the 'value'
 									switch (value) {
 										case 'tab1':
-											tabData = cdfcalc(data, 10);
+											tabData = cdfcalc(formatData(data), 15);
 											break;
 										case 'tab2':
-											tabData = numsorter(data);
+											tabData = numsorter(formatData(data));
 											break;
 									}
 								}
 								if (value == 'tab1') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-											<AreaGraph receivedData={tabData} empty={!updated} />
-											{/* <div>{JSON.stringify(tabData)}</div> THIS IS FOR DEBUGGING TO SEE THE RAW JSON DATA*/}
+											<AreaGraph receivedData={tabData} empty={updated} />
 										</div>
 									);
 								} else if (value == 'tab2') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-											<BarGraph receivedData={siteData} empty={!updated} />
-											{/* <div>{JSON.stringify(tabData)}</div> THIS IS FOR DEBUGGING TO SEE THE RAW JSON DATA*/}
+											<BarGraph receivedData={siteData} empty={updated} />
 										</div>
 									);
 								}
