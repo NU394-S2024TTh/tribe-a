@@ -37,7 +37,7 @@ export default function ShowList({ streamingservice }: { streamingservice: strin
 							<Linkbutton
 								selected={selectedShow?.name === show.name}
 								onDataReceived={setReviewData}
-								numReviews={1}
+								numReviews={10}
 								onClickEvent={handleShowClick}
 								show={show}
 							>
