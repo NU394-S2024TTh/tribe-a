@@ -1,4 +1,4 @@
-const API_KEY = 'YOUR API KEY';
+const API_KEY = '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';
 const MODEL = 'llama-3-sonar-small-32k-online';
 const MAX_RETRIES = 5;
 
@@ -7,7 +7,7 @@ export async function getReviewsWithPerplexity(showName) {
 
 	const CONTENT = `You are an artificial intelligence assistant in the media industry specializing in gathering and analyzing reviews and information about TV shows. Your task is to engage in a helpful, detailed, and polite conversation with the user, ensuring thorough and accurate responses. You excel at extracting recent reviews, audience feedback, and sentiment analysis from various platforms, including social media, review sites, and news articles.`;
 
-	const PROMPT = `I am representing the company producing the show "${showName}" I would like to understand the latest sentiment and public perception of the show. Please provide five recent reviews and audience feedback from various platforms, including social media, review sites, and news articles. List these reviews with their full content (not a summary) in a JSON document. For each review, include the date posted, title (if applicable), source, content, and rating (if applicable). Please make sure there are no errors in the JSON format.`;
+	const PROMPT = `I am representing the company producing the show "${showName}" I would like to understand the latest sentiment and public perception of the show. Please provide five recent reviews and audience feedback from various platforms, including social media, review sites, and news articles. List these reviews with their full content (not a summary) in a JSON document. For each review, include the date_posted, title (if applicable), source, content, and rating (if applicable). Please make sure there are no errors in the JSON format.`;
 
 	// Ensure the API key is set
 	if (!API_KEY) {
@@ -75,7 +75,11 @@ function validateJSONFormat(data) {
 	if (Array.isArray(data)) {
 		return data.every(
 			(item) =>
-				item.date_posted && item.source && item.content && item.title && item.rating,
+				(item.date_posted || item.datePosted) &&
+				item.source &&
+				item.content &&
+				item.title &&
+				item.rating,
 		);
 	}
 	return false;

@@ -1,6 +1,7 @@
 import { DatabaseReference, get, ref } from 'firebase/database';
 
 import { database } from './firebaseconfig';
+import axios, { AxiosResponse } from 'axios';
 
 // Define the Review type
 export type Review = {
@@ -21,6 +22,22 @@ export type Show = {
 	review_ids: string[];
 	seaason: number;
 };
+
+// Define the shape of the request data
+interface RequestData {
+	movie_names: string[];
+}
+
+// Define the shape of the response data (update this according to your Lambda response)
+interface LambdaResponse {
+	statusCode: number;
+	body: string;
+}
+
+// Define the error response structure if needed
+interface ErrorResponse {
+	message: string;
+}
 
 // Utility function to find the show ID by name in Realtime Database
 async function findShowIdByName(
@@ -65,6 +82,10 @@ async function getReviewsByIds(reviewIds: string[]): Promise<Review[]> {
 	return reviews;
 }
 
+// API URL for the Lambda function
+const apiUrl =
+	'https://your-api-id.execute-api.region.amazonaws.com/your-stage/your-resource';
+
 // Function to get reviews for a given show
 async function getReviews(showName: string): Promise<Review[]> {
 	try {
@@ -75,7 +96,28 @@ async function getReviews(showName: string): Promise<Review[]> {
 				`Show ${showName} not found in the database. Calling Lambda function to scrape and save data.`,
 			);
 
-			// Call the Lambda function to scrape data (assumed to be implemented elsewhere)
+			try {
+				const requestData: RequestData = { movie_names: [showName] };
+				const response: AxiosResponse<LambdaResponse> = await axios.post(
+					apiUrl,
+					requestData,
+				);
+
+				// Check if the Lambda function executed successfully
+				if (response.data.statusCode !== 200) {
+					throw new Error(`Lambda function returned an error: ${response.data.body}`);
+				}
+			} catch (error) {
+				if (axios.isAxiosError(error) && error.response) {
+					// Handle known Axios error structure
+					console.error(`Error calling Lambda function: ${error.response.data}`);
+					throw new Error(error.response.data.message);
+				} else {
+					// Handle unknown errors
+					console.error(`Unknown error calling Lambda function: ${error}`);
+					throw new Error('An unknown error occurred while calling the Lambda function.');
+				}
+			}
 
 			// Recheck if the show now exists in the database
 			const recheck = await findShowIdByName(showName);
