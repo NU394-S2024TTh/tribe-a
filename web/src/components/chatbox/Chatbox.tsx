@@ -4,16 +4,16 @@ import './Chatbox.css';
 import { Signals } from 'deep-chat/dist/types/handler';
 import { MessageContent } from 'deep-chat/dist/types/messages';
 import { DeepChat } from 'deep-chat-react';
-import { onValue } from 'firebase/database';
+import { onValue, set } from 'firebase/database';
 import { ref } from 'firebase/database';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import ai from '../../../resources/robot.png';
 import user from '../../../resources/white_user.png';
 import { database } from '../../firebase/firebaseconfig';
-import ChatBot from '../../processes/ChatBot';
+// import ChatBot from '../../processes/ChatBot';
 import NewChatBot from '../../processes/NewChatbot';
-import testReviews from './testReviews';
+// import testReviews from './testReviews';
 
 interface BodyMessages {
 	messages: MessageContent[];
@@ -29,21 +29,25 @@ function Chatbox() {
 	useEffect(() => {
 		chatBot.init_from_texts();
 	}, []);
+	// set reviews state
+	// const [reviews, setReviews] = useState<string[]>([]);
 	const dbRef = ref(database, 'reviews/');
-	// onValue(dbRef, (snapshot) => {
-	// 	// from new value, then handleReviewsChange
-	// 	const reviews = snapshot.val();
+	onValue(dbRef, (snapshot) => {
+		// from new value, then handleReviewsChange
+		console.log('Reviews state changed with # reviews:', snapshot.size);
+		const reviews = snapshot.val();
+		// chatBot.vectorDB_add(reviews);
+	});
 
-	// });
+	// useEffect(() => {
+		
+	// }, [reviews]);
 
 	async function getMessage(body: BodyMessages) {
-		console.log('body', body);
 		const text = body.messages[0].text || ''; // Add null check
 		// const retrieved = await chatBot.get_relevant_documents(text);
 		// console.log(retrieved);
 		const resultOne = await chatBot.ask_question(text);
-		console.log({ resultOne });
-		console.log(JSON.stringify(resultOne.result, null, 2));
 		return JSON.stringify(resultOne.result, null, 2);
 	}
 
@@ -58,7 +62,7 @@ function Chatbox() {
 	}
 
 	return (
-		<div className="flex h-screen items-center justify-center">
+		<div className="mt-[-8vh] flex h-screen items-center justify-center">
 			<DeepChat
 				avatars={{
 					ai: { src: ai, styles: { avatar: { fontSize: '1.5rem' } } },
@@ -108,6 +112,12 @@ function Chatbox() {
 				}}
 				request={{ handler: chatboxhandler }}
 			/>
+			<div className="arrow-container w-full">
+				<div className="chatbot-text flex items-center justify-center pl-[25vw]">
+					Chatbot below
+				</div>
+				<div className="arrow-down ml-[25vw]"></div>
+			</div>
 		</div>
 	);
 }

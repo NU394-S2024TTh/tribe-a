@@ -5,7 +5,7 @@ import ShowList from './Showlist';
 export default function Home() {
 	return (
 		<Router>
-			<ShowList streamingservice="Paramount+" />
+			<ShowList />
 		</Router>
 	);
 }

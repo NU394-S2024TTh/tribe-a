@@ -3,17 +3,90 @@ import { BaseMessage } from '@langchain/core/messages';
 import { PromptTemplate } from '@langchain/core/prompts';
 import { RunnableSequence } from '@langchain/core/runnables';
 import { ChatOpenAI } from '@langchain/openai';
-import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, query, where, where } from 'firebase/firestore';
 import { LLMChain } from 'langchain/chains';
 import { BufferMemory } from 'langchain/memory';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 
 import { db } from '../../firebase/firebase';
 
+type Reviews = {
+  [key: string]: {
+    [key: string]: string | number | undefined; // This is the index signature
+		author?: string;
+		content?: string;
+		created?: string;
+		rating?: number;
+		show?: string;
+		source?: string;
+		title?: string;
+		type?: string;
+	};
+};
+
 export default class ChatBot {
 	textSplitter!: RecursiveCharacterTextSplitter;
 	memory!: BufferMemory; // Buffer Memory for storing chat history
 	chain!: RunnableSequence;
+
+	async vectorDB_add(reviews: Reviews) {
+		// Add the unseen reviews to the database
+		const reviewsRef = await collection(db, 'Reviews');
+		console.log('Adding reviews to the vectore database');
+		console.log('# reviews', Object.keys(reviews).length);
+
+		let unseen_reviews = [];
+
+		// Get the unseen reviews
+		for (let [key, review] of Object.entries(reviews)) {
+			let entries = Object.entries(review);
+			for (const [key, value] of entries){
+				// console.log(key, value);
+				// remove the field with empty value
+				let __entries = Object.entries(review);
+				for (const [k, v] of __entries){
+					if (v === ''){
+						delete review[k];
+					}
+				}
+			}
+			// alert(JSON.stringify(review));
+			let review_str = JSON.stringify(review);
+			// ignore the case where the query string is too long
+			try {
+				const q = query(reviewsRef, where('input', '==', review_str));
+				const querySnapshot = await getDocs(q);
+				if (querySnapshot.empty) {
+					unseen_reviews.push(review);
+				}
+			} catch (error) {
+				console.warn(error);
+				// do nothing
+			}
+		}
+
+		console.log('# unseen_reviews', unseen_reviews.length);
+		alert("");
+
+		unseen_reviews.forEach(async (review) => {
+			
+			// get stringified JSON-formatted review
+			const review_str = JSON.stringify(review);
+
+			// check if it already exists
+			const q = query(reviewsRef, where('input', '==', review_str));
+			const querySnapshot = await getDocs(q);
+
+			// if it doesn't exist, add it
+			if (querySnapshot.empty) {
+				const docRef = await addDoc(reviewsRef, { input: review_str });
+				console.log('Document written with ID: ', docRef.id);
+			} else {
+				console.log('Document already exists');
+			}
+		}
+		);
+	}
 
 	async vectorDB_search(s_query: string) {
 		try {
