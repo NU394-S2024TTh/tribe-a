@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Tabs from '../components/charts/ChartTabNav';
-import ReviewsInput from '../components/reviews/ReviewsInput';
+import RecentReviewsList from '../components/reviews/RecentReviewsList';
 
 interface SentimentAnalysisProps {
-	showName: string | null;
+	showName: string;
 	data: number[];
 }
 
@@ -16,7 +16,7 @@ export default function SentimentAnalysis({ showName, data }: SentimentAnalysisP
 				<Tabs data={data}></Tabs>
 			</div>
 			<div>
-				<ReviewsInput />
+				<RecentReviewsList showName={showName} />
 			</div>
 		</div>
 	);
