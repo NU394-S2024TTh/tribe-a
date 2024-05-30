@@ -43,7 +43,6 @@ export const Linkbutton = ({
 				// Get sentiments for reviews
 				const sentiments = await sentimentAnalyzer.getDatedSentiments(reviews);
 
-
 				onDataReceived(sentiments);
 				setIsLoading(false);
 			},
