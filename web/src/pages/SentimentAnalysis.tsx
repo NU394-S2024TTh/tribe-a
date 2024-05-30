@@ -3,6 +3,7 @@ import '../themes/index.css';
 import React from 'react';
 
 import Tabs from '../components/charts/ChartTabNav';
+import RecentReviewsList from '../components/reviews/RecentReviewsList';
 
 interface SentimentAnalysisProps {
 	showName: string | null;
@@ -17,6 +18,9 @@ export default function SentimentAnalysis({ showName, data }: SentimentAnalysisP
 			<h1 className="mb-8 font-[ubuntu] text-3xl font-bold text-white">{showName}</h1>
 			<div className="mb-8">
 				<Tabs data={data}></Tabs>
+			</div>
+			<div>
+				<RecentReviewsList showName={showName} />
 			</div>
 		</div>
 	);
