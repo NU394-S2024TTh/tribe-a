@@ -4,16 +4,15 @@ import './Chatbox.css';
 import { Signals } from 'deep-chat/dist/types/handler';
 import { MessageContent } from 'deep-chat/dist/types/messages';
 import { DeepChat } from 'deep-chat-react';
-import { useEffect } from 'react';
-
-import NewChatBot from '../../processes/NewChatbot';
 import { onValue } from 'firebase/database';
 import { ref } from 'firebase/database';
+import { useEffect } from 'react';
 
 import ai from '../../../resources/robot.png';
 import user from '../../../resources/white_user.png';
 import { database } from '../../firebase/firebaseconfig';
 import ChatBot from '../../processes/ChatBot';
+import NewChatBot from '../../processes/NewChatbot';
 import testReviews from './testReviews';
 
 interface BodyMessages {
@@ -34,7 +33,7 @@ function Chatbox() {
 	// onValue(dbRef, (snapshot) => {
 	// 	// from new value, then handleReviewsChange
 	// 	const reviews = snapshot.val();
-		
+
 	// });
 
 	async function getMessage(body: BodyMessages) {
