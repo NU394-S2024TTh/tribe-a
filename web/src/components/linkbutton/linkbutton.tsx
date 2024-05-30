@@ -1,11 +1,9 @@
 // LinkButton.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { onValue, ref } from 'firebase/database';
 import React, { useRef, useState } from 'react';
 
-import { database } from '../../../firebase/firebase';
+import { getReviews, Review } from '../../firebase/firebasefunctions';
 import { Show } from '../../pages/Showlist';
-import sentimentAnalyzer from '../../processes/SentimentAnalyzer.mjs';
 import { useButtonPress } from './buttonpress';
 interface LinkButtonProps {
 	onDataReceived: (data: any) => void;
@@ -20,7 +18,6 @@ export const Linkbutton = ({
 	onDataReceived,
 	children,
 	selected,
-	numReviews,
 	onClickEvent,
 	show,
 }: LinkButtonProps) => {
@@ -28,29 +25,29 @@ export const Linkbutton = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
 
-	const handleButtonClick = () => {
+	function formatShowName(showName: string) {
+		// Remove colons, replace spaces with underscores, and convert to lowercase
+		return showName.replace(/:/g, '').replace(/\s+/g, '_').toLowerCase();
+	}
+	const handleButtonClick = async () => {
 		setIsLoading(true);
 		setError(null);
 		onClickEvent(show);
-		const reviewsRef = ref(database, 'reviews');
-		onValue(
-			reviewsRef,
-			async (snapshot) => {
-				const data = snapshot.val();
-				const reviews = Object.values(data)
-					.slice(0, numReviews)
-					.map((review: any) => review.content);
 
-				const sentiments = await sentimentAnalyzer.getSentiments(reviews);
-
-				onDataReceived(sentiments);
-				setIsLoading(false);
-			},
-			(errorObject) => {
-				setError(new Error('The read failed: ' + errorObject));
-				setIsLoading(false);
-			},
-		);
+		try {
+			console.log(formatShowName(show.name));
+			const reviews: Review[] = await getReviews(formatShowName(show.name));
+			const reviews_data = reviews.map((review: any) => ({
+				sentiment: review.rating,
+				created: review.created,
+			}));
+			onDataReceived(reviews_data);
+		} catch (error: any) {
+			console.error('Failed to load reviews:', error);
+			setError(new Error('Failed to load reviews: ' + error.message));
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	useButtonPress(buttonRef, handleButtonClick);

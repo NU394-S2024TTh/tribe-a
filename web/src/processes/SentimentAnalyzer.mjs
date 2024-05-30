@@ -85,6 +85,21 @@ class SentimentAnalyzer {
 
 		return sentiments.reduce((a, b) => a + b, 0) / numReviews; // Calculate average
 	}
+
+	async getDatedSentiments(reviews) {
+		const promises = [];
+		for (let review of reviews) {
+			const sentimentPromise = sentimentAnalyzer.getSentiment(review.content).then(sentiment => {
+				return {
+					sentiment,
+					created: review.created
+				};
+			});
+			promises.push(sentimentPromise);
+		}
+		const sentiments = await Promise.all(promises);
+		return sentiments;
+	}
 }
 
 // Instantiate the SentimentAnalyzer class
