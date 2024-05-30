@@ -33,13 +33,9 @@ function Chatbox() {
 	});
 
 	async function getMessage(body: BodyMessages) {
-		console.log('body', body);
 		const text = body.messages[0].text || ''; // Add null check
 		const retrieved = await chatBot.get_relevant_documents(text);
-		console.log(retrieved);
 		const resultOne = await chatBot.ask_question(text);
-		console.log({ resultOne });
-		console.log(JSON.stringify(resultOne.result, null, 2));
 		return JSON.stringify(resultOne.result, null, 2);
 	}
 
@@ -54,7 +50,7 @@ function Chatbox() {
 	}
 
 	return (
-		<div className="flex h-screen items-center justify-center">
+		<div className="flex h-screen items-center justify-center mt-[-8vh]">
 			<DeepChat
 				avatars={{
 					ai: { src: ai, styles: { avatar: { fontSize: '1.5rem' } } },
@@ -104,6 +100,10 @@ function Chatbox() {
 				}}
 				request={{ handler: chatboxhandler }}
 			/>
+			<div className="arrow-container">
+				<div className="chatbot-text">Chatbot below</div>
+				<div className="arrow-down"></div> 
+			</div>
 		</div>
 	);
 }
