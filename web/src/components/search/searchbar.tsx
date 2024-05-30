@@ -8,7 +8,7 @@ import React, {
 	useState,
 } from 'react';
 
-import { getReviews, type Review } from '../../firebase/firebasefunctions';
+import { getReviews, getShowList, type Review } from '../../firebase/firebasefunctions';
 import type { Show } from '../../pages/Showlist';
 type SearchBarProps = {
 	onSearch: (data: any) => void;
@@ -49,8 +49,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, setName }) => {
 				value={query}
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}
-				placeholder="Search..."
-				className="min-w-[10vw] rounded-lg"
+				placeholder="Search Show Name..."
+				className="min-w-[20vw] rounded-lg focus:outline-none focus:ring-4 focus:ring-[#10d48e]"
 			/>
 		</div>
 	);

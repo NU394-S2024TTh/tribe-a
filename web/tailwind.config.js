@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 function alpha(variableName) {
 	// some tailwind magic to allow us to specify opacity with CSS variables (eg: bg-app/80)
 	// https://tailwindcss.com/docs/customizing-colors#using-css-variables

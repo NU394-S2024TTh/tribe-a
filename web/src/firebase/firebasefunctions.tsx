@@ -114,4 +114,19 @@ async function fetchShowData(showId: string): Promise<Show> {
 	}
 }
 
-export { getReviews };
+async function getShowList() {
+	try {
+		const showRef = ref(database, 'shows/');
+		const showsSnapshot = await get(showRef);
+		if (showsSnapshot.exists()) {
+			console.log(showsSnapshot.val());
+			return showsSnapshot.val();
+		} else {
+			throw new Error(`Show list not found `);
+		}
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+export { getReviews, getShowList };
