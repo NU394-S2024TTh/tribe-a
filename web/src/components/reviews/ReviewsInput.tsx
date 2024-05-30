@@ -8,6 +8,7 @@ import sentimentAnalyzer from '../../processes/SentimentAnalyzer.mjs';
 export default function ReviewsInput() {
 	const [input, setInput] = useState<string>('');
 	const [reviews, setReviews] = useState<string[]>([]);
+	const [sentiments, setSentiments] = useState<number[]>([]);
 
 	// run sentiment analysis on reviews state change
 	async function handleReviewsChange(reviews: string[]) {
@@ -16,18 +17,30 @@ export default function ReviewsInput() {
 		for (let i = 0; i < reviews.length; i++) {
 			alert(`Review: ${reviews[i]}\nSentiment: ${sentiments[i]}`); // alert sentiment analysis results
 		}
+		setSentiments(sentiments);
 		return sentiments;
 	}
-	const dbRef = ref(database, 'reviews/');
-	onValue(dbRef, (snapshot) => {
+	const dbReviewsRef = ref(database, 'reviews/');
+	const dbSentimentsRef = ref(database, 'sentiments/');
+	onValue(dbReviewsRef, (snapshot) => {
 		// from new value, then handleReviewsChange
 		const reviews = snapshot.val();
 		handleReviewsChange(reviews);
 	});
 
 	useEffect(() => {
-		set(dbRef, reviews);
+		set(dbReviewsRef, reviews);
 	}, [reviews]);
+	// for sentiments
+	// onValue(dbSentimentsRef, (snapshot) => {
+	// 	// from new value, then handleReviewsChange
+	// 	const sentiments = snapshot.val();
+	// 	handleReviewsChange(reviews);
+	// });
+
+	useEffect(() => {
+		set(dbSentimentsRef, sentiments);
+	}, [sentiments]);
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setInput(event.target.value);

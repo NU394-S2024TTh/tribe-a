@@ -1,6 +1,6 @@
 // LinkButton.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { onValue, ref } from 'firebase/database';
+import { get, onValue, ref, set } from 'firebase/database';
 import React, { useRef, useState } from 'react';
 
 import { database } from '../../../firebase/firebase';
@@ -27,24 +27,40 @@ export const Linkbutton = ({
 	const buttonRef = useRef(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
+	//const [sentiments, setSentiments] = useState<number[]>([]);
 
 	const handleButtonClick = () => {
 		setIsLoading(true);
 		setError(null);
 		onClickEvent(show);
-		const reviewsRef = ref(database, 'reviews');
+		const reviewRef = ref(database, `reviews/`);
+		const sentimentRef = ref(database, `sentiments/`);
+
+		// const showReviews = getReviews(show.name);
+		// this is running the new sentiment analysis any t
 		onValue(
-			reviewsRef,
+			reviewRef,
 			async (snapshot) => {
-				const data = snapshot.val();
+				const data = snapshot.val(); // this is of all reviews
 				const reviews = Object.values(data)
 					.slice(0, numReviews)
 					.map((review: any) => review.content);
-
-				const sentiments = await sentimentAnalyzer.getSentiments(reviews);
-
-				onDataReceived(sentiments);
-				setIsLoading(false);
+				// we have the show, we want to see if there are already sentiments for the show
+				let sentiments;
+				try {
+					const sentimentSnapshot = await get(sentimentRef);
+					if (sentimentSnapshot.exists()) {
+						sentiments = sentimentSnapshot.val();
+					} else {
+						sentiments = await sentimentAnalyzer.getSentiments(reviews);
+						set(sentimentRef, sentiments);
+					}
+				} catch (e) {
+					console.error(e);
+				} finally {
+					onDataReceived(sentiments);
+					setIsLoading(false);
+				}
 			},
 			(errorObject) => {
 				setError(new Error('The read failed: ' + errorObject));
