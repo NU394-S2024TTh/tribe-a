@@ -113,7 +113,7 @@ export default function Tabs({ data }: TabsProps) {
 								if (data && Array.isArray(data)) {
 									switch (value) {
 										case 'tab1':
-											tabData = cdfcalc(formatData(data), 15);
+											tabData = cdfcalc(formatData(data), 10);
 											break;
 										case 'tab2':
 											tabData = numsorter(formatData(data));
