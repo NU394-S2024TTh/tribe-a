@@ -50,7 +50,7 @@ function Chatbox() {
 	}
 
 	return (
-		<div className="flex h-screen items-center justify-center mt-[-8vh]">
+		<div className="mt-[-8vh] flex h-screen items-center justify-center">
 			<DeepChat
 				avatars={{
 					ai: { src: ai, styles: { avatar: { fontSize: '1.5rem' } } },
@@ -102,7 +102,7 @@ function Chatbox() {
 			/>
 			<div className="arrow-container">
 				<div className="chatbot-text">Chatbot below</div>
-				<div className="arrow-down"></div> 
+				<div className="arrow-down"></div>
 			</div>
 		</div>
 	);

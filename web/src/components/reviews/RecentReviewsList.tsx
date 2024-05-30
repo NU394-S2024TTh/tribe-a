@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useEffect, useState } from 'react';
 
 import { getReviewsWithPerplexity } from '../../processes/perplexity.mjs';
@@ -10,7 +11,7 @@ export type RecentReview = {
 	rating?: number;
 };
 
-const RecentReviewsList = ({ showName }: { showName: string }) => {
+const RecentReviewsList = ({ showName }: { showName: string | null }) => {
 	const [reviews, setReviews] = useState<RecentReview[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentReviewIndex, setCurrentReviewIndex] = useState<number>(0);
