@@ -16,6 +16,8 @@
 		"type-check": "tsc"
 	},
 	"dependencies": {
+		"@fontsource/rubik": "^5.0.20",
+		"@fontsource/ubuntu": "^5.0.13",
 		"@langchain/core": "^0.2.2",
 		"@langchain/openai": "^0.0.34",
 		"@mui/icons-material": "^5.15.16",

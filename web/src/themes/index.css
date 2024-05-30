@@ -4,6 +4,8 @@
 
 @import 'tailwindcss/utilities';
 
+@import '@fontsource/ubuntu';
+@import '@fontsource/rubik';
 body {
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',

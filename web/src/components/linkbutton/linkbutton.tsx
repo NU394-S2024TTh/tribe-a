@@ -1,5 +1,7 @@
 // LinkButton.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import '../../themes/index.css';
+
 import React, { useRef, useState } from 'react';
 
 import { getReviews, Review } from '../../firebase/firebasefunctions';
@@ -56,7 +58,7 @@ export const Linkbutton = ({
 		<div>
 			<button
 				ref={buttonRef}
-				className={`w-full cursor-pointer rounded-lg px-4 py-2 text-left text-xl text-white ${
+				className={`min-w-[25vw] cursor-pointer rounded-lg px-4 py-2 text-left font-[rubik] text-[2vh] text-white ${
 					selected ? 'bg-[#10d48e]' : 'bg-[#204a5e] hover:bg-[#2a6a83]'
 				}`}
 			>
