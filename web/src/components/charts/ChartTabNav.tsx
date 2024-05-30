@@ -82,7 +82,12 @@ export default function Tabs({ data }: TabsProps) {
 	const [updated, setUpdated] = useState(false);
 	useEffect(() => {
 		setData(modData);
-		setUpdated(false);
+		if (
+			JSON.stringify(modData) != JSON.stringify([[[1]]]) ||
+			JSON.stringify(modData) != null
+		) {
+			setUpdated(true);
+		}
 	}, [data]);
 	return (
 		<RootWrapper>
@@ -125,13 +130,13 @@ export default function Tabs({ data }: TabsProps) {
 								if (value == 'tab1') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-											<AreaGraph receivedData={tabData} empty={updated} />
+											<AreaGraph receivedData={tabData} empty={!updated} />
 										</div>
 									);
 								} else if (value == 'tab2') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-											<BarGraph receivedData={siteData} empty={updated} />
+											<BarGraph receivedData={siteData} empty={!updated} />
 										</div>
 									);
 								} else if (value === 'tab3') {

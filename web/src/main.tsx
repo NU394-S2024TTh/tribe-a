@@ -29,11 +29,11 @@ const PageWrapper = (props: PropsWithChildren) => {
 						</pattern>
 						<linearGradient id="fade-horizontal">
 							<stop offset="0%" stopColor="black" stopOpacity="1" />
-							<stop offset="50%" stopColor="white" stopOpacity="0" />
+							<stop offset="20%" stopColor="white" stopOpacity="0.1" />
 						</linearGradient>
 						<linearGradient id="fade-vertical" gradientTransform="rotate(90)">
 							<stop offset="0%" stopColor="white" stopOpacity="1" />
-							<stop offset="20%" stopColor="white" stopOpacity="0" />
+							<stop offset="20%" stopColor="white" stopOpacity="0.1" />
 						</linearGradient>
 						<mask id="mask">
 							<rect width="100%" height="100%" fill="url(#fade-horizontal)" />

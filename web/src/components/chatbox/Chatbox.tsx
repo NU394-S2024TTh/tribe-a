@@ -34,7 +34,6 @@ function Chatbox() {
 
 	async function getMessage(body: BodyMessages) {
 		const text = body.messages[0].text || ''; // Add null check
-		const retrieved = await chatBot.get_relevant_documents(text);
 		const resultOne = await chatBot.ask_question(text);
 		return JSON.stringify(resultOne.result, null, 2);
 	}

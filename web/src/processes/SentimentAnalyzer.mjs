@@ -89,12 +89,14 @@ class SentimentAnalyzer {
 	async getDatedSentiments(reviews) {
 		const promises = [];
 		for (let review of reviews) {
-			const sentimentPromise = sentimentAnalyzer.getSentiment(review.content).then(sentiment => {
-				return {
-					sentiment,
-					created: review.created
-				};
-			});
+			const sentimentPromise = sentimentAnalyzer
+				.getSentiment(review.content)
+				.then((sentiment) => {
+					return {
+						sentiment,
+						created: review.created,
+					};
+				});
 			promises.push(sentimentPromise);
 		}
 		const sentiments = await Promise.all(promises);
