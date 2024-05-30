@@ -1,7 +1,7 @@
+import axios, { AxiosResponse } from 'axios';
 import { DatabaseReference, get, ref } from 'firebase/database';
 
 import { database } from './firebaseconfig';
-import axios, { AxiosResponse } from 'axios';
 
 // Define the Review type
 export type Review = {
@@ -83,8 +83,7 @@ async function getReviewsByIds(reviewIds: string[]): Promise<Review[]> {
 }
 
 // API URL for the Lambda function
-const apiUrl =
-	'https://your-api-id.execute-api.region.amazonaws.com/your-stage/your-resource';
+const apiUrl = 'https://z6nmhjvn7y4zwi4s7gvibllw5a0cwwey.lambda-url.us-east-2.on.aws/';
 
 // Function to get reviews for a given show
 async function getReviews(showName: string): Promise<Review[]> {

@@ -100,7 +100,9 @@ function Chatbox() {
 				request={{ handler: chatboxhandler }}
 			/>
 			<div className="arrow-container w-full">
-				<div className="flex items-center justify-center pl-[25vw] chatbot-text">Chatbot below</div>
+				<div className="chatbot-text flex items-center justify-center pl-[25vw]">
+					Chatbot below
+				</div>
 				<div className="arrow-down ml-[25vw]"></div>
 			</div>
 		</div>
