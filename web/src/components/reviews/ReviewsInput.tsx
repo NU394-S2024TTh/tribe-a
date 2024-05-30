@@ -13,11 +13,14 @@ export default function ReviewsInput() {
 	// run sentiment analysis on reviews state change
 	async function handleReviewsChange(reviews: string[]) {
 		console.log('Reviews state changed: ', reviews);
-		const sentiments = await sentimentAnalyzer.getSentiments(reviews); // run sentiment analysis on reviews
+		const sentiments = await sentimentAnalyzer.getSentiments(reviews); // run sentiment analysis on reviews with new reviews
+
 		for (let i = 0; i < reviews.length; i++) {
 			alert(`Review: ${reviews[i]}\nSentiment: ${sentiments[i]}`); // alert sentiment analysis results
 		}
 		setSentiments(sentiments);
+
+		
 		return sentiments;
 	}
 	const dbReviewsRef = ref(database, 'reviews/');
