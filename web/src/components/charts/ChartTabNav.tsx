@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
 import React from 'react';
@@ -7,6 +9,7 @@ import * as TabsPrimitive from '../primitives/Tabs';
 import AreaGraph from './AreaGraph';
 import { cdfcalc, numsorter } from './CDF';
 import BarGraph from './LiveGraph';
+import TrendAnalysis from './TrendGraph';
 
 interface Tab {
 	title: string;
@@ -24,6 +27,10 @@ const tabs: Tab[] = [
 		title: 'Sentiment Analysis',
 		value: 'tab2',
 	},
+	{
+		title: 'Trend Analysis',
+		value: 'tab3',
+	},
 ];
 
 export interface reviewitem {
@@ -35,13 +42,16 @@ export interface data {
 	data: number[];
 }
 
-function formatData(numbers: number[]) {
-	return numbers.map((num, index) => {
-		return {
-			name: (index + 1).toString(),
-			number: num,
-		};
-	});
+interface TabsProps {
+	data: { sentiment: number; created: string }[];
+}
+
+function formatData(reviews: { sentiment: number; created: string }[]) {
+	const data = reviews.map((review, index) => ({
+		name: (index + 1).toString(),
+		number: review.sentiment,
+	}));
+	return data;
 }
 
 const siteData = [
@@ -67,15 +77,12 @@ const siteData = [
 	},
 ];
 
-export default function Tabs({ data }: data) {
+export default function Tabs({ data }: TabsProps) {
 	const [modData, setData] = useState(data);
 	const [updated, setUpdated] = useState(false);
 	useEffect(() => {
 		setData(modData);
-		if (JSON.stringify(data) != JSON.stringify([[[1]]])) {
-			setUpdated(true);
-		}
-		console.log(data);
+		setUpdated(false);
 	}, [data]);
 	return (
 		<RootWrapper>
@@ -111,6 +118,8 @@ export default function Tabs({ data }: data) {
 										case 'tab2':
 											tabData = numsorter(formatData(data));
 											break;
+										case 'tab3':
+											break;
 									}
 								}
 								if (value == 'tab1') {
@@ -123,6 +132,12 @@ export default function Tabs({ data }: data) {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
 											<BarGraph receivedData={siteData} empty={updated} />
+										</div>
+									);
+								} else if (value === 'tab3') {
+									return (
+										<div className="mt-10 flex w-full flex-col items-center justify-center">
+											<TrendAnalysis data={data} />
 										</div>
 									);
 								}
