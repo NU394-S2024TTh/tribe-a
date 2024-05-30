@@ -39,6 +39,7 @@ export default function AreaGraph({ receivedData, empty }: AreaGraphProps) {
 			</div>
 		);
 	}
+
 	return (
 		<ResponsiveContainer width={575} height={400} className="ml-[-40px]">
 			<AreaChart data={receivedData}>

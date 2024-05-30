@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
 import React from 'react';
@@ -45,10 +47,11 @@ interface TabsProps {
 }
 
 function formatData(reviews: { sentiment: number; created: string }[]) {
-	return reviews.map((review, index) => ({
+	const data = reviews.map((review, index) => ({
 		name: (index + 1).toString(),
 		number: review.sentiment,
 	}));
+	return data;
 }
 
 const siteData = [
@@ -75,16 +78,11 @@ const siteData = [
 ];
 
 export default function Tabs({ data }: TabsProps) {
-	console.log('Tabs');
-	console.log(data);
 	const [modData, setData] = useState(data);
 	const [updated, setUpdated] = useState(false);
 	useEffect(() => {
 		setData(modData);
-		if (JSON.stringify(data) != JSON.stringify([[[1]]])) {
-			setUpdated(true);
-		}
-		console.log(data);
+		setUpdated(false);
 	}, [data]);
 	return (
 		<RootWrapper>
