@@ -2,7 +2,7 @@
 # Streamlytics.AI
 
 ## Project Overview
-A dynamic web application designed for internet advertising agencies, offering comprehensive tools to analyze viewer sentiments and comments on major streaming services like Paramount+. The application provides functionalities for tracking viewer engagement, summarizing sentiments, and viewing historical trends to optimize advertising strategies. Key features include:
+A dynamic web application designed for internet advertising agencies, offering comprehensive tools to analyze viewer sentiments and comments on major streaming services like Paramount+. The application provides functionalities for tracking viewer engagement, summarizing sentiments, and viewing historical trends to optimize advertising strategies. Key features include:a
 
 ### Key Features
 
@@ -39,13 +39,65 @@ For our project management needs, we primarily used Linear. Linear is an efficie
 
 By using Linear, we maintained an organized and transparent workflow, which was crucial for the successful completion of our project.
 
+## Build & Deployment
+
+This section outlines the steps needed to build and deploy the application. Follow these instructions to get the application up and running in a new environment.
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed on your system:
+
+- **Node.js** (version 14.x or higher)
+- **npm** (version 6.x or higher)
+- **Firebase CLI** (version 9.x or higher)
+
+### Software Dependencies
+
+Make sure you have installed all the necessary dependencies for the project. You can do this by running:
+
+```bash
+$ cd web
+$ npm install
+```
+
+### Step-by-Step Guide
+1. First, navigate to the directory where your project's web application resides
+2. To build the application, you have two options. Use the appropriate command based on your situation:
+
+   a. Standard Build: Run the following command to build the application:
+
+   ```bash
+   $ npm run build
+   ```
+   b. Alternative Build: If you encounter TypeScript (tsc) or linting errors, use this command instead:
+
+   ```bash
+   $ npx vite build
+   ```
+
+3. Deploy to Firebase Hosting
+Once the build process is complete, deploy the application to Firebase Hosting with the following command:
+
+```bash
+Copy code
+$ firebase deploy --only hosting
+```
+
 ## Additional Information
 
 ### Architectural Design
+
+#### Repo Design
 The project follows a monorepo structure managed by npm workspaces, integrating both the frontend and backend in a single repository.
 
 - **Frontend**: Located in the `web` directory, built with React and Vite. This part of the application handles the user interface and client-side logic.
 - **Backend**: Serverless functions located in the `functions` directory, managed by Firebase. These functions handle server-side logic, including API endpoints and background processing.
+
+
+#### Project Design
+![image info](./images/image.png)
+
+
 
 ### Coding Standards
 - **CamelCase**: Used for filenames and components to maintain consistency and readability. This helps in distinguishing multi-word names clearly.
@@ -68,6 +120,9 @@ The project follows a monorepo structure managed by npm workspaces, integrating 
 - **package.json**: Project metadata, including dependencies and scripts.
 
 
+
+
+# Misc. Information from Template
 ## TS-FB Monorepo for tribes
 
 This repository contains a TypeScript monorepo managed by npm workspaces. It includes a React-Vite application in the `/web` directory and Firebase Functions in the `/functions` directory, alongside shared resources in the `/shared` directory.
