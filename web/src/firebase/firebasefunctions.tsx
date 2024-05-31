@@ -168,7 +168,6 @@ async function getShowList(): Promise<ShowName[]> {
 					? `${snakeToNormalText(show.name)} (Season ${show.season})`
 					: snakeToNormalText(show.name),
 			}));
-			console.log(shows);
 			return shows;
 		} else {
 			throw new Error('Show list not found');

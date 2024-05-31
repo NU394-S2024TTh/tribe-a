@@ -11,7 +11,6 @@ import {
 	getDocs,
 	query,
 	where,
-	where,
 } from 'firebase/firestore';
 import { LLMChain } from 'langchain/chains';
 import { BufferMemory } from 'langchain/memory';
@@ -197,6 +196,7 @@ export default class ChatBot {
 		});
 		const fasterChain = new LLMChain({
 			llm: fasterModel,
+			// @ts-expect-error: mising properties _streamevents
 			prompt: questionGeneratorTemplate,
 		});
 
@@ -206,6 +206,7 @@ export default class ChatBot {
 		});
 		const slowerChain = new LLMChain({
 			llm: slowerModel,
+			// @ts-expect-error: mising properties _streamevents
 			prompt: questionPrompt,
 		});
 
