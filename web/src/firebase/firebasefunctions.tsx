@@ -20,7 +20,11 @@ export type Show = {
 	category: string;
 	name: string;
 	review_ids: string[];
-	seaason: number;
+	season: number;
+};
+
+export type ShowName = {
+	name: string;
 };
 
 // Define the shape of the request data
@@ -32,11 +36,6 @@ interface RequestData {
 interface LambdaResponse {
 	statusCode: number;
 	body: string;
-}
-
-// Define the error response structure if needed
-interface ErrorResponse {
-	message: string;
 }
 
 // Utility function to find the show ID by name in Realtime Database
@@ -89,41 +88,40 @@ const apiUrl = 'https://z6nmhjvn7y4zwi4s7gvibllw5a0cwwey.lambda-url.us-east-2.on
 async function getReviews(showName: string): Promise<Review[]> {
 	try {
 		const { exists, showId } = await findShowIdByName(showName);
-
 		if (!exists || !showId) {
-			// console.log(
-			// 	`Show ${showName} not found in the database. Calling Lambda function to scrape and save data.`,
-			// );
-			// try {
-			// 	const requestData: RequestData = { movie_names: [showName] };
-			// 	const response: AxiosResponse<LambdaResponse> = await axios.post(
-			// 		apiUrl,
-			// 		requestData,
-			// 	);
-			// 	// Check if the Lambda function executed successfully
-			// 	if (response.data.statusCode !== 200) {
-			// 		throw new Error(`Lambda function returned an error: ${response.data.body}`);
-			// 	}
-			// } catch (error) {
-			// 	if (axios.isAxiosError(error) && error.response) {
-			// 		// Handle known Axios error structure
-			// 		console.error(`Error calling Lambda function: ${error.response.data}`);
-			// 		throw new Error(error.response.data.message);
-			// 	} else {
-			// 		// Handle unknown errors
-			// 		console.error(`Unknown error calling Lambda function: ${error}`);
-			// 		throw new Error('An unknown error occurred while calling the Lambda function.');
-			// 	}
-			// }
-			// // Recheck if the show now exists in the database
-			// const recheck = await findShowIdByName(showName);
-			// if (recheck.exists && recheck.showId) {
-			// 	const showData = await fetchShowData(recheck.showId);
-			// 	const reviews = await getReviewsByIds(showData.review_ids);
-			// 	return reviews;
-			// } else {
-			// 	throw new Error('Failed to retrieve show data after Lambda function execution.');
-			// }
+			console.log(
+				`Show ${showName} not found in the database. Calling Lambda function to scrape and save data.`,
+			);
+			try {
+				const requestData: RequestData = { movie_names: [showName] };
+				const response: AxiosResponse<LambdaResponse> = await axios.post(
+					apiUrl,
+					requestData,
+				);
+				// Check if the Lambda function executed successfully
+				if (response.data.statusCode !== 200) {
+					throw new Error(`Lambda function returned an error: ${response.data.body}`);
+				}
+			} catch (error) {
+				if (axios.isAxiosError(error) && error.response) {
+					// Handle known Axios error structure
+					console.error(`Error calling Lambda function: ${error.response.data}`);
+					throw new Error(error.response.data.message);
+				} else {
+					// Handle unknown errors
+					console.error(`Unknown error calling Lambda function: ${error}`);
+					throw new Error('An unknown error occurred while calling the Lambda function.');
+				}
+			}
+			// Recheck if the show now exists in the database
+			const recheck = await findShowIdByName(showName);
+			if (recheck.exists && recheck.showId) {
+				const showData = await fetchShowData(recheck.showId);
+				const reviews = await getReviewsByIds(showData.review_ids);
+				return reviews;
+			} else {
+				throw new Error('Failed to retrieve show data after Lambda function execution.');
+			}
 		} else {
 			console.log(`Show ${showName} found in the database.`);
 			const showData = await fetchShowData(showId);
@@ -152,18 +150,32 @@ async function fetchShowData(showId: string): Promise<Show> {
 	}
 }
 
-async function getShowList() {
+function snakeToNormalText(snakeCaseString: string) {
+	return snakeCaseString
+		.split('_') // Split the string by underscores
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+		.join(' '); // Join the words back with spaces
+}
+
+async function getShowList(): Promise<ShowName[]> {
 	try {
 		const showRef = ref(database, 'shows/');
 		const showsSnapshot = await get(showRef);
 		if (showsSnapshot.exists()) {
-			console.log(showsSnapshot.val());
-			return showsSnapshot.val();
+			const showsData: { [key: string]: Show } = showsSnapshot.val();
+			const shows: ShowName[] = Object.values(showsData).map((show: Show) => ({
+				name: show.season
+					? `${snakeToNormalText(show.name)} (Season ${show.season})`
+					: snakeToNormalText(show.name),
+			}));
+			console.log(shows);
+			return shows;
 		} else {
-			throw new Error(`Show list not found `);
+			throw new Error('Show list not found');
 		}
 	} catch (e) {
 		console.error(e);
+		return [];
 	}
 }
 

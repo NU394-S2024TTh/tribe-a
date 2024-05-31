@@ -5,15 +5,15 @@ import '../../themes/index.css';
 import React, { useRef, useState } from 'react';
 
 import { getReviews, Review } from '../../firebase/firebasefunctions';
-import { Show } from '../../pages/Showlist';
+import { ShowName } from '../../firebase/firebasefunctions';
 import { useButtonPress } from './buttonpress';
 interface LinkButtonProps {
 	onDataReceived: (data: any) => void;
 	children: React.ReactNode;
 	selected: boolean;
 	numReviews: number;
-	onClickEvent: (show: Show) => void;
-	show: Show;
+	onClickEvent: (show: ShowName) => void;
+	show: ShowName;
 }
 
 export const Linkbutton = ({
@@ -28,8 +28,11 @@ export const Linkbutton = ({
 	const [error, setError] = useState<Error | null>(null);
 
 	function formatShowName(showName: string) {
+		// Remove the season information (e.g., "(Season 3)")
+		const nameWithoutSeason = showName.replace(/\s*\(Season \d+\)\s*$/i, '');
+
 		// Remove colons, replace spaces with underscores, and convert to lowercase
-		return showName.replace(/:/g, '').replace(/\s+/g, '_').toLowerCase();
+		return nameWithoutSeason.replace(/:/g, '').replace(/\s+/g, '_').toLowerCase();
 	}
 	const handleButtonClick = async () => {
 		setIsLoading(true);
@@ -39,11 +42,17 @@ export const Linkbutton = ({
 		try {
 			console.log(formatShowName(show.name));
 			const reviews: Review[] = await getReviews(formatShowName(show.name));
-			const reviews_data = reviews.map((review: any) => ({
-				sentiment: review.rating,
-				created: review.created,
-			}));
-			onDataReceived(reviews_data);
+			console.log(reviews);
+			const reviewsData = reviews
+				.filter(
+					(review: any) =>
+						review.rating !== undefined && review.rating !== null && review.rating !== '',
+				)
+				.map((review: any) => ({
+					sentiment: review.rating,
+					created: review.created,
+				}));
+			onDataReceived(reviewsData);
 		} catch (error: any) {
 			console.error('Failed to load reviews:', error);
 			setError(new Error('Failed to load reviews: ' + error.message));
