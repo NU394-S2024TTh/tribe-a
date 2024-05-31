@@ -60,6 +60,12 @@ $ cd web
 $ npm install
 ```
 
+For development, we are using **husky** to hook automatically `tsc` and various linting tools to *pre-commit* action. To set up, run `npm install` in the root folder as
+```bash
+tribe-a/ $ npm install 
+```
+You should be able to see one `.husky/` subfolder afterwards.
+
 ### Step-by-Step Guide
 1. First, navigate to the directory where your project's web application resides
 2. To build the application, you have two options. Use the appropriate command based on your situation:
@@ -79,7 +85,6 @@ $ npm install
 Once the build process is complete, deploy the application to Firebase Hosting with the following command:
 
 ```bash
-Copy code
 $ firebase deploy --only hosting
 ```
 
