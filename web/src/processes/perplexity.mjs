@@ -1,4 +1,4 @@
-const API_KEY = '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';
+const API_KEY = 'YOUR API KEY';
 const MODEL = 'llama-3-sonar-small-32k-online';
 const MAX_RETRIES = 5;
 
