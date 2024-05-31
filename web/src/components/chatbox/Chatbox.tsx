@@ -4,14 +4,16 @@ import './Chatbox.css';
 import { Signals } from 'deep-chat/dist/types/handler';
 import { MessageContent } from 'deep-chat/dist/types/messages';
 import { DeepChat } from 'deep-chat-react';
-import { onValue } from 'firebase/database';
+import { onValue, set } from 'firebase/database';
 import { ref } from 'firebase/database';
+import { useEffect, useState } from 'react';
 
 import ai from '../../../resources/robot.png';
 import user from '../../../resources/white_user.png';
 import { database } from '../../firebase/firebaseconfig';
-import ChatBot from '../../processes/ChatBot';
-import testReviews from './testReviews';
+// import ChatBot from '../../processes/ChatBot';
+import NewChatBot from '../../processes/NewChatbot';
+// import testReviews from './testReviews';
 
 interface BodyMessages {
 	messages: MessageContent[];
@@ -22,15 +24,24 @@ function Chatbox() {
 		{ role: 'ai', text: 'Ask me anything about movie recommendations!' },
 	];
 
-	const chatBot = new ChatBot();
-	chatBot.init_from_texts(testReviews); // not sure if we still need this w/ the onValue
-
+	const chatBot = new NewChatBot();
+	// Only call init_from_texts once upon first page load
+	useEffect(() => {
+		chatBot.init_from_texts();
+	}, []);
+	// set reviews state
+	// const [reviews, setReviews] = useState<string[]>([]);
 	const dbRef = ref(database, 'reviews/');
 	onValue(dbRef, (snapshot) => {
 		// from new value, then handleReviewsChange
+		console.log('Reviews state changed with # reviews:', snapshot.size);
 		const reviews = snapshot.val();
-		chatBot.init_from_texts(reviews);
+		// chatBot.vectorDB_add(reviews);
 	});
+
+	// useEffect(() => {
+
+	// }, [reviews]);
 
 	async function getMessage(body: BodyMessages) {
 		const text = body.messages[0].text || ''; // Add null check
@@ -40,7 +51,12 @@ function Chatbox() {
 
 	async function chatboxhandler(body: BodyMessages, signals: Signals) {
 		let result = await getMessage(body); // Await the getMessage function call
-		result = result.replace(/"/g, '');
+		// result = result.replace(/"/g, '');
+		// console.log('result:', result);
+		result = result.replace(/\\n/g, '\n');
+		result = result.replace(/\\t/g, '\t');
+		result = result.replace(/\\/g, '');
+		// console.log('result:', result);
 		setTimeout(() => {
 			signals.onResponse({
 				text: result,
@@ -105,6 +121,12 @@ function Chatbox() {
 				}}
 				request={{ handler: chatboxhandler }}
 			/>
+			{/* <div className="arrow-container w-full">
+				<div className="chatbot-text flex items-center justify-center pl-[25vw]">
+					Chatbot below
+				</div>
+				<div className="arrow-down ml-[25vw]"></div>
+			</div> */}
 		</div>
 	);
 }
