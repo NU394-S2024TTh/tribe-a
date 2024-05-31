@@ -30,6 +30,7 @@ export default class ChatBot {
 			docs,
 			new OpenAIEmbeddings({ apiKey: import.meta.env.VITE_OPENAI_API_KEY }),
 		);
+		// @ts-expect-error: mising properties _streamevents
 		this.retriever = await this.vectorStore.asRetriever();
 
 		this.memory = new BufferMemory({
@@ -84,6 +85,7 @@ export default class ChatBot {
 		});
 		const fasterChain = new LLMChain({
 			llm: fasterModel,
+			// @ts-expect-error: mising properties _streamevents
 			prompt: questionGeneratorTemplate,
 		});
 
@@ -93,6 +95,7 @@ export default class ChatBot {
 		});
 		const slowerChain = new LLMChain({
 			llm: slowerModel,
+			// @ts-expect-error: mising properties _streamevents
 			prompt: questionPrompt,
 		});
 
