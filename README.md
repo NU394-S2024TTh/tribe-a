@@ -81,7 +81,12 @@ You should be able to see one `.husky/` subfolder afterwards.
    $ npx vite build
    ```
 
-3. Deploy to Firebase Hosting
+3. Add `.env` file in the `web/` sub-folder with the following content
+   ```
+   VITE_OPENAI_API_EKY=<your_openai_api_key_here>
+   ```
+
+4. Deploy to Firebase Hosting
 Once the build process is complete, deploy the application to Firebase Hosting with the following command:
 
 ```bash
