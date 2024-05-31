@@ -83,7 +83,8 @@ You should be able to see one `.husky/` subfolder afterwards.
 
 3. Add `.env` file in the `web/` sub-folder with the following content
    ```
-   VITE_OPENAI_API_EKY=<your_openai_api_key_here>
+   VITE_OPENAI_API_KEY=<your_openai_api_key_here>
+   VITE_PERPLEXITY_API_KEY=<your_perplexity_api_key_here>
    ```
 
 4. Deploy to Firebase Hosting

@@ -1,4 +1,4 @@
-const API_KEY = 'YOUR API KEY';
+const API_KEY = import.meta.env.VITE_PERPLEXITY_API_KEY;
 const MODEL = 'llama-3-sonar-small-32k-online';
 const MAX_RETRIES = 5;
 
