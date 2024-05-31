@@ -54,7 +54,7 @@ const RecentReviewsList = ({ showName }: { showName: string | null }) => {
 	};
 
 	if (isLoading) {
-		return <div className="text-white">Loading recent reviews...</div>;
+		return <div className="mt-10 text-2xl text-white">Loading recent reviews...</div>;
 	}
 
 	return (

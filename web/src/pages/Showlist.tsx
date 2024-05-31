@@ -41,18 +41,21 @@ export default function ShowList() {
 
 	const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter') {
-			console.log(searchQuery);
 			try {
-				const reviews: Review[] = await getReviews(searchQuery);
-				const reviews_data = reviews.map((review: any) => ({
-					sentiment: review.rating,
-					created: review.created,
-				}));
-				setReviewData(reviews_data);
 				const newShow: Show = {
 					name: searchQuery,
 				};
 				setSelectedShow(newShow);
+				const reviews: Review[] = await getReviews(searchQuery);
+				if (reviews) {
+					const reviews_data = reviews.map((review: any) => ({
+						sentiment: review.rating,
+						created: review.created,
+					}));
+					setReviewData(reviews_data);
+				} else {
+					setReviewData(null);
+				}
 			} catch (error: any) {
 				console.error('Failed to load reviews:', error);
 			}

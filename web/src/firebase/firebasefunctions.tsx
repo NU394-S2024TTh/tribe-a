@@ -91,42 +91,39 @@ async function getReviews(showName: string): Promise<Review[]> {
 		const { exists, showId } = await findShowIdByName(showName);
 
 		if (!exists || !showId) {
-			console.log(
-				`Show ${showName} not found in the database. Calling Lambda function to scrape and save data.`,
-			);
-
-			try {
-				const requestData: RequestData = { movie_names: [showName] };
-				const response: AxiosResponse<LambdaResponse> = await axios.post(
-					apiUrl,
-					requestData,
-				);
-
-				// Check if the Lambda function executed successfully
-				if (response.data.statusCode !== 200) {
-					throw new Error(`Lambda function returned an error: ${response.data.body}`);
-				}
-			} catch (error) {
-				if (axios.isAxiosError(error) && error.response) {
-					// Handle known Axios error structure
-					console.error(`Error calling Lambda function: ${error.response.data}`);
-					throw new Error(error.response.data.message);
-				} else {
-					// Handle unknown errors
-					console.error(`Unknown error calling Lambda function: ${error}`);
-					throw new Error('An unknown error occurred while calling the Lambda function.');
-				}
-			}
-
-			// Recheck if the show now exists in the database
-			const recheck = await findShowIdByName(showName);
-			if (recheck.exists && recheck.showId) {
-				const showData = await fetchShowData(recheck.showId);
-				const reviews = await getReviewsByIds(showData.review_ids);
-				return reviews;
-			} else {
-				throw new Error('Failed to retrieve show data after Lambda function execution.');
-			}
+			// console.log(
+			// 	`Show ${showName} not found in the database. Calling Lambda function to scrape and save data.`,
+			// );
+			// try {
+			// 	const requestData: RequestData = { movie_names: [showName] };
+			// 	const response: AxiosResponse<LambdaResponse> = await axios.post(
+			// 		apiUrl,
+			// 		requestData,
+			// 	);
+			// 	// Check if the Lambda function executed successfully
+			// 	if (response.data.statusCode !== 200) {
+			// 		throw new Error(`Lambda function returned an error: ${response.data.body}`);
+			// 	}
+			// } catch (error) {
+			// 	if (axios.isAxiosError(error) && error.response) {
+			// 		// Handle known Axios error structure
+			// 		console.error(`Error calling Lambda function: ${error.response.data}`);
+			// 		throw new Error(error.response.data.message);
+			// 	} else {
+			// 		// Handle unknown errors
+			// 		console.error(`Unknown error calling Lambda function: ${error}`);
+			// 		throw new Error('An unknown error occurred while calling the Lambda function.');
+			// 	}
+			// }
+			// // Recheck if the show now exists in the database
+			// const recheck = await findShowIdByName(showName);
+			// if (recheck.exists && recheck.showId) {
+			// 	const showData = await fetchShowData(recheck.showId);
+			// 	const reviews = await getReviewsByIds(showData.review_ids);
+			// 	return reviews;
+			// } else {
+			// 	throw new Error('Failed to retrieve show data after Lambda function execution.');
+			// }
 		} else {
 			console.log(`Show ${showName} found in the database.`);
 			const showData = await fetchShowData(showId);

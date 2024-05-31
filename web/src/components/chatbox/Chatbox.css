@@ -1,8 +1,4 @@
 .arrow-container {
-	position: absolute;
-	top: 43%;
-	left: 40%;
-	transform: translate(-50%, -50%);
 	text-align: center;
 	display: flex;
 	flex-direction: column;

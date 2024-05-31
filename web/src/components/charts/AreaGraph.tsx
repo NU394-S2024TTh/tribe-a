@@ -17,7 +17,7 @@ interface AreaGraphProps {
 }
 
 function CustomTooltip({ active, payload, label }: any) {
-	if (active) {
+	if (active && payload && payload.length) {
 		return (
 			<div className="tooltip  min-h-[69px] min-w-[160px] border-[1px] bg-white">
 				<h4 className="ml-[6px] mt-[5px] text-[#268b07]">{label}</h4>
