@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from 'axios';
 import { DatabaseReference, get, ref } from 'firebase/database';
 
 import { database } from './firebaseconfig';
@@ -21,6 +22,22 @@ export type Show = {
 	review_ids: string[];
 	seaason: number;
 };
+
+// Define the shape of the request data
+interface RequestData {
+	movie_names: string[];
+}
+
+// Define the shape of the response data (update this according to your Lambda response)
+interface LambdaResponse {
+	statusCode: number;
+	body: string;
+}
+
+// Define the error response structure if needed
+interface ErrorResponse {
+	message: string;
+}
 
 // Utility function to find the show ID by name in Realtime Database
 async function findShowIdByName(
@@ -65,27 +82,48 @@ async function getReviewsByIds(reviewIds: string[]): Promise<Review[]> {
 	return reviews;
 }
 
+// API URL for the Lambda function
+const apiUrl = 'https://z6nmhjvn7y4zwi4s7gvibllw5a0cwwey.lambda-url.us-east-2.on.aws/';
+
 // Function to get reviews for a given show
 async function getReviews(showName: string): Promise<Review[]> {
 	try {
 		const { exists, showId } = await findShowIdByName(showName);
 
 		if (!exists || !showId) {
-			console.log(
-				`Show ${showName} not found in the database. Calling Lambda function to scrape and save data.`,
-			);
-
-			// Call the Lambda function to scrape data (assumed to be implemented elsewhere)
-
-			// Recheck if the show now exists in the database
-			const recheck = await findShowIdByName(showName);
-			if (recheck.exists && recheck.showId) {
-				const showData = await fetchShowData(recheck.showId);
-				const reviews = await getReviewsByIds(showData.review_ids);
-				return reviews;
-			} else {
-				throw new Error('Failed to retrieve show data after Lambda function execution.');
-			}
+			// console.log(
+			// 	`Show ${showName} not found in the database. Calling Lambda function to scrape and save data.`,
+			// );
+			// try {
+			// 	const requestData: RequestData = { movie_names: [showName] };
+			// 	const response: AxiosResponse<LambdaResponse> = await axios.post(
+			// 		apiUrl,
+			// 		requestData,
+			// 	);
+			// 	// Check if the Lambda function executed successfully
+			// 	if (response.data.statusCode !== 200) {
+			// 		throw new Error(`Lambda function returned an error: ${response.data.body}`);
+			// 	}
+			// } catch (error) {
+			// 	if (axios.isAxiosError(error) && error.response) {
+			// 		// Handle known Axios error structure
+			// 		console.error(`Error calling Lambda function: ${error.response.data}`);
+			// 		throw new Error(error.response.data.message);
+			// 	} else {
+			// 		// Handle unknown errors
+			// 		console.error(`Unknown error calling Lambda function: ${error}`);
+			// 		throw new Error('An unknown error occurred while calling the Lambda function.');
+			// 	}
+			// }
+			// // Recheck if the show now exists in the database
+			// const recheck = await findShowIdByName(showName);
+			// if (recheck.exists && recheck.showId) {
+			// 	const showData = await fetchShowData(recheck.showId);
+			// 	const reviews = await getReviewsByIds(showData.review_ids);
+			// 	return reviews;
+			// } else {
+			// 	throw new Error('Failed to retrieve show data after Lambda function execution.');
+			// }
 		} else {
 			console.log(`Show ${showName} found in the database.`);
 			const showData = await fetchShowData(showId);

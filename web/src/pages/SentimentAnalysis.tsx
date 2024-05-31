@@ -11,6 +11,7 @@ interface SentimentAnalysisProps {
 }
 
 export default function SentimentAnalysis({ showName, data }: SentimentAnalysisProps) {
+	console.log(showName);
 	console.log('Sentiment analysis here');
 	console.log(data);
 	return (

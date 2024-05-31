@@ -45,15 +45,18 @@ function Chatbox() {
 
 	async function getMessage(body: BodyMessages) {
 		const text = body.messages[0].text || ''; // Add null check
-		// const retrieved = await chatBot.get_relevant_documents(text);
-		// console.log(retrieved);
 		const resultOne = await chatBot.ask_question(text);
 		return JSON.stringify(resultOne.result, null, 2);
 	}
 
 	async function chatboxhandler(body: BodyMessages, signals: Signals) {
 		let result = await getMessage(body); // Await the getMessage function call
-		result = result.replace(/"/g, '');
+		// result = result.replace(/"/g, '');
+		// console.log('result:', result);
+		result = result.replace(/\\n/g, '\n');
+		result = result.replace(/\\t/g, '\t');
+		result = result.replace(/\\/g, '');
+		// console.log('result:', result);
 		setTimeout(() => {
 			signals.onResponse({
 				text: result,
@@ -62,7 +65,13 @@ function Chatbox() {
 	}
 
 	return (
-		<div className="mt-[-8vh] flex h-screen items-center justify-center">
+		<div className="flex flex-col items-center justify-center">
+			<div className="arrow-container mb-20 w-full">
+				<div className="flex items-center justify-center text-2xl text-white">
+					Chatbot below
+				</div>
+				<div className="arrow-down"></div>
+			</div>
 			<DeepChat
 				avatars={{
 					ai: { src: ai, styles: { avatar: { fontSize: '1.5rem' } } },
@@ -112,12 +121,12 @@ function Chatbox() {
 				}}
 				request={{ handler: chatboxhandler }}
 			/>
-			<div className="arrow-container w-full">
+			{/* <div className="arrow-container w-full">
 				<div className="chatbot-text flex items-center justify-center pl-[25vw]">
 					Chatbot below
 				</div>
 				<div className="arrow-down ml-[25vw]"></div>
-			</div>
+			</div> */}
 		</div>
 	);
 }
