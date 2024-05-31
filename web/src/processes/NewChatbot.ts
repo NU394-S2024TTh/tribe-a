@@ -3,7 +3,16 @@ import { BaseMessage } from '@langchain/core/messages';
 import { PromptTemplate } from '@langchain/core/prompts';
 import { RunnableSequence } from '@langchain/core/runnables';
 import { ChatOpenAI } from '@langchain/openai';
-import { addDoc, collection, doc, getDoc, getDocs, query, where, where } from 'firebase/firestore';
+import {
+	addDoc,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	query,
+	where,
+	where,
+} from 'firebase/firestore';
 import { LLMChain } from 'langchain/chains';
 import { BufferMemory } from 'langchain/memory';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
@@ -11,8 +20,8 @@ import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { db } from '../../firebase/firebase';
 
 type Reviews = {
-  [key: string]: {
-    [key: string]: string | number | undefined; // This is the index signature
+	[key: string]: {
+		[key: string]: string | number | undefined; // This is the index signature
 		author?: string;
 		content?: string;
 		created?: string;
@@ -35,23 +44,23 @@ export default class ChatBot {
 		console.log('Adding reviews to the vectore database');
 		console.log('# reviews', Object.keys(reviews).length);
 
-		let unseen_reviews = [];
+		const unseen_reviews = [];
 
 		// Get the unseen reviews
-		for (let [key, review] of Object.entries(reviews)) {
-			let entries = Object.entries(review);
-			for (const [key, value] of entries){
+		for (const [key, review] of Object.entries(reviews)) {
+			const entries = Object.entries(review);
+			for (const [key, value] of entries) {
 				// console.log(key, value);
 				// remove the field with empty value
-				let __entries = Object.entries(review);
-				for (const [k, v] of __entries){
-					if (v === ''){
+				const __entries = Object.entries(review);
+				for (const [k, v] of __entries) {
+					if (v === '') {
 						delete review[k];
 					}
 				}
 			}
 			// alert(JSON.stringify(review));
-			let review_str = JSON.stringify(review);
+			const review_str = JSON.stringify(review);
 			// ignore the case where the query string is too long
 			try {
 				const q = query(reviewsRef, where('input', '==', review_str));
@@ -66,10 +75,9 @@ export default class ChatBot {
 		}
 
 		console.log('# unseen_reviews', unseen_reviews.length);
-		alert("");
+		alert('');
 
 		unseen_reviews.forEach(async (review) => {
-			
 			// get stringified JSON-formatted review
 			const review_str = JSON.stringify(review);
 
@@ -84,8 +92,7 @@ export default class ChatBot {
 			} else {
 				console.log('Document already exists');
 			}
-		}
-		);
+		});
 	}
 
 	async vectorDB_search(s_query: string) {

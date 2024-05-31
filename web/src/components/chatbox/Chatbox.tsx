@@ -40,7 +40,7 @@ function Chatbox() {
 	});
 
 	// useEffect(() => {
-		
+
 	// }, [reviews]);
 
 	async function getMessage(body: BodyMessages) {
