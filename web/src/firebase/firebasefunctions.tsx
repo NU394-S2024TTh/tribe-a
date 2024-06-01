@@ -99,7 +99,7 @@ async function getReviews(showName: string): Promise<Review[]> {
 					requestData,
 				);
 				// Check if the Lambda function executed successfully
-				if (response.data.statusCode !== 200) {
+				if (response.status !== 200) {
 					throw new Error(`Lambda function returned an error: ${response.data.body}`);
 				}
 			} catch (error) {
