@@ -49,6 +49,7 @@ export default function ShowList() {
 					name: searchQuery,
 				};
 				setSelectedShow(newShow);
+				setReviewData([]);
 				const reviews: Review[] = await getReviews(
 					searchQuery.replace(/\s+/g, '_').toLowerCase(),
 				);
