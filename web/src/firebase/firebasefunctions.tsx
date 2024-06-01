@@ -167,4 +167,59 @@ async function getShowList() {
 	}
 }
 
-export { getReviews, getShowList };
+async function getPlatformData() {
+	console.log('Getting platform data');
+	// let reviewsData = await getReviews(showName);  // TODO: blocked by firebase functions
+	let reviewsData;
+
+	// TODO: workaround below: using the whole reviews list instead of filtered by show
+	try {
+		const reviewsRef = ref(database, 'reviews/');
+		const reviewsSnapshot = await get(reviewsRef);
+
+		if (reviewsSnapshot.exists()) {
+
+			reviewsData = reviewsSnapshot.val();  // { reviewId: { source: 'IMDb', rating: 1.6 }, ...
+			// console.log("reviewsData", reviewsData);
+		} else {
+			throw new Error(`Review list not found `);
+		}
+	} catch (e) {
+		console.error(e);
+		return [];
+	}
+
+	const platformDataDict: { [key: string]: number } = {};
+	let count = 0;
+	for (const reviewId in reviewsData) {
+		const review: Review = reviewsData[reviewId];
+		if (!("source" in review) || !("rating" in review)) {
+			continue;
+		}
+		count += 1;
+		const source = review.source;
+		const rating = review.rating;
+		if (typeof rating === 'number') {
+			if (source in platformDataDict) {
+				platformDataDict[source] += rating;
+			} else {
+				platformDataDict[source] = rating;
+			}
+		}
+	}
+
+	for (const source in platformDataDict) {
+		platformDataDict[source] /= count;
+	}
+
+	// convert to array of objects
+	const platformData = Object.entries(platformDataDict).map(([name, number]) => ({
+		name,
+		number
+	}));
+	console.log("platformData", platformData);
+
+	return platformData;
+} 
+
+export { getReviews, getShowList, getPlatformData };
