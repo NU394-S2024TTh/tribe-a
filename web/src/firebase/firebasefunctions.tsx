@@ -82,7 +82,7 @@ async function getReviewsByIds(reviewIds: string[]): Promise<Review[]> {
 }
 
 // API URL for the Lambda function
-const apiUrl = 'https://z6nmhjvn7y4zwi4s7gvibllw5a0cwwey.lambda-url.us-east-2.on.aws/';
+const apiUrl = 'https://4obuajxcu7.execute-api.us-east-2.amazonaws.com/Deployed/scraper';
 
 // Function to get reviews for a given show
 async function getReviews(showName: string): Promise<Review[]> {
