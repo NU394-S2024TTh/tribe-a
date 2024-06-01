@@ -178,8 +178,7 @@ async function getPlatformData() {
 		const reviewsSnapshot = await get(reviewsRef);
 
 		if (reviewsSnapshot.exists()) {
-
-			reviewsData = reviewsSnapshot.val();  // { reviewId: { source: 'IMDb', rating: 1.6 }, ...
+			reviewsData = reviewsSnapshot.val(); // { reviewId: { source: 'IMDb', rating: 1.6 }, ...
 			// console.log("reviewsData", reviewsData);
 		} else {
 			throw new Error(`Review list not found `);
@@ -193,7 +192,7 @@ async function getPlatformData() {
 	let count = 0;
 	for (const reviewId in reviewsData) {
 		const review: Review = reviewsData[reviewId];
-		if (!("source" in review) || !("rating" in review)) {
+		if (!('source' in review) || !('rating' in review)) {
 			continue;
 		}
 		count += 1;
@@ -215,11 +214,11 @@ async function getPlatformData() {
 	// convert to array of objects
 	const platformData = Object.entries(platformDataDict).map(([name, number]) => ({
 		name,
-		number
+		number,
 	}));
-	console.log("platformData", platformData);
+	console.log('platformData', platformData);
 
 	return platformData;
-} 
+}
 
-export { getReviews, getShowList, getPlatformData };
+export { getPlatformData, getReviews, getShowList };

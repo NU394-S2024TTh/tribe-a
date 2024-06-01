@@ -4,13 +4,13 @@ import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
 import React from 'react';
 
+import { getPlatformData } from '../../firebase/firebasefunctions';
 import { tw } from '../../utils/tw';
 import * as TabsPrimitive from '../primitives/Tabs';
 import AreaGraph from './AreaGraph';
 import { cdfcalc, numsorter } from './CDF';
 import BarGraph from './LiveGraph';
 import TrendAnalysis from './TrendGraph';
-import { getPlatformData } from '../../firebase/firebasefunctions';
 
 interface Tab {
 	title: string;
@@ -44,7 +44,7 @@ export interface data {
 }
 
 interface TabsProps {
-	data: { sentiment: number; created: string; source: string; }[];
+	data: { sentiment: number; created: string; source: string }[];
 }
 
 function formatData(reviews: { sentiment: number; created: string }[]) {
