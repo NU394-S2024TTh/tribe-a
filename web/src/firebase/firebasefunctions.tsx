@@ -82,7 +82,7 @@ async function getReviewsByIds(reviewIds: string[]): Promise<Review[]> {
 }
 
 // API URL for the Lambda function
-const apiUrl = 'https://z6nmhjvn7y4zwi4s7gvibllw5a0cwwey.lambda-url.us-east-2.on.aws/';
+const apiUrl = 'https://4obuajxcu7.execute-api.us-east-2.amazonaws.com/Deployed/scraper';
 
 // Function to get reviews for a given show
 async function getReviews(showName: string): Promise<Review[]> {
@@ -99,7 +99,7 @@ async function getReviews(showName: string): Promise<Review[]> {
 					requestData,
 				);
 				// Check if the Lambda function executed successfully
-				if (response.data.statusCode !== 200) {
+				if (response.status !== 200) {
 					throw new Error(`Lambda function returned an error: ${response.data.body}`);
 				}
 			} catch (error) {
@@ -178,4 +178,58 @@ async function getShowList(): Promise<ShowName[]> {
 	}
 }
 
-export { getReviews, getShowList };
+async function getPlatformData() {
+	console.log('Getting platform data');
+	// let reviewsData = await getReviews(showName);  // TODO: blocked by firebase functions
+	let reviewsData;
+
+	// TODO: workaround below: using the whole reviews list instead of filtered by show
+	try {
+		const reviewsRef = ref(database, 'reviews/');
+		const reviewsSnapshot = await get(reviewsRef);
+
+		if (reviewsSnapshot.exists()) {
+			reviewsData = reviewsSnapshot.val(); // { reviewId: { source: 'IMDb', rating: 1.6 }, ...
+			// console.log("reviewsData", reviewsData);
+		} else {
+			throw new Error(`Review list not found `);
+		}
+	} catch (e) {
+		console.error(e);
+		return [];
+	}
+
+	const platformDataDict: { [key: string]: number } = {};
+	let count = 0;
+	for (const reviewId in reviewsData) {
+		const review: Review = reviewsData[reviewId];
+		if (!('source' in review) || !('rating' in review)) {
+			continue;
+		}
+		count += 1;
+		const source = review.source;
+		const rating = review.rating;
+		if (typeof rating === 'number') {
+			if (source in platformDataDict) {
+				platformDataDict[source] += rating;
+			} else {
+				platformDataDict[source] = rating;
+			}
+		}
+	}
+
+	for (const source in platformDataDict) {
+		platformDataDict[source] /= count;
+	}
+
+	// convert to array of objects
+	const platformData = Object.entries(platformDataDict).map(([name, number]) => ({
+		name,
+		number,
+	}));
+	console.log('platformData', platformData);
+
+	return platformData;
+}
+
+export { getPlatformData, getReviews, getShowList };

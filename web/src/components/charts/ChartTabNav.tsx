@@ -4,6 +4,7 @@ import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
 import React from 'react';
 
+import { getPlatformData } from '../../firebase/firebasefunctions';
 import { tw } from '../../utils/tw';
 import * as TabsPrimitive from '../primitives/Tabs';
 import AreaGraph from './AreaGraph';
@@ -43,7 +44,7 @@ export interface data {
 }
 
 interface TabsProps {
-	data: { sentiment: number; created: string }[];
+	data: { sentiment: number; created: string; source: string }[];
 }
 
 function formatData(reviews: { sentiment: number; created: string }[]) {
@@ -54,28 +55,30 @@ function formatData(reviews: { sentiment: number; created: string }[]) {
 	return data;
 }
 
-const siteData = [
-	{
-		name: 'Paramount +',
-		number: '3',
-	},
-	{
-		name: 'IMDb',
-		number: '1.6',
-	},
-	{
-		name: 'Netflix',
-		number: '4',
-	},
-	{
-		name: 'Rotten Apples',
-		number: '4.7',
-	},
-	{
-		name: 'Letterboxd',
-		number: '3.6',
-	},
-];
+// const siteData = [
+// 	{
+// 		name: 'Paramount +',
+// 		number: '3',
+// 	},
+// 	{
+// 		name: 'IMDb',
+// 		number: '1.6',
+// 	},
+// 	{
+// 		name: 'Netflix',
+// 		number: '4',
+// 	},
+// 	{
+// 		name: 'Rotten Apples',
+// 		number: '4.7',
+// 	},
+// 	{
+// 		name: 'Letterboxd',
+// 		number: '3.6',
+// 	},
+// ];
+
+const platformData = await getPlatformData();
 
 export default function Tabs({ data }: TabsProps) {
 	const [modData, setData] = useState(data);
@@ -136,7 +139,7 @@ export default function Tabs({ data }: TabsProps) {
 								} else if (value == 'tab2') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-											<BarGraph receivedData={siteData} empty={!updated} />
+											<BarGraph receivedData={platformData} empty={!updated} />
 										</div>
 									);
 								} else if (value === 'tab3') {
