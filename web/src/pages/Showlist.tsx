@@ -2,17 +2,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import '../themes/index.css';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import logo from '../../public/logo.png';
 import { Linkbutton } from '../components/linkbutton/linkbutton';
-import { getReviews, type Review } from '../firebase/firebasefunctions';
+import {
+	getReviews,
+	getShowList,
+	type Review,
+	type ShowName,
+} from '../firebase/firebasefunctions';
 import SentimentAnalysis from './SentimentAnalysis';
-export interface Show {
-	name: string;
-}
 
-const shows: Show[] = [
+const shows: ShowName[] = [
 	{ name: 'Avatar: The Last Airbender' },
 	{ name: 'Elsbeth' },
 	{ name: 'Frasier 2023' },
@@ -25,9 +27,10 @@ const shows: Show[] = [
 ];
 
 export default function ShowList() {
-	const [selectedShow, setSelectedShow] = useState<Show | null>(null);
+	const [selectedShow, setSelectedShow] = useState<ShowName | null>(null);
+	const [showList, setShowList] = useState<ShowName[]>();
 
-	const handleShowClick = (show: Show): void => {
+	const handleShowClick = (show: ShowName): void => {
 		setSelectedShow(show);
 	};
 
@@ -42,11 +45,13 @@ export default function ShowList() {
 	const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter') {
 			try {
-				const newShow: Show = {
+				const newShow: ShowName = {
 					name: searchQuery,
 				};
 				setSelectedShow(newShow);
-				const reviews: Review[] = await getReviews(searchQuery);
+				const reviews: Review[] = await getReviews(
+					searchQuery.replace(/\s+/g, '_').toLowerCase(),
+				);
 				if (reviews) {
 					const reviews_data = reviews.map((review: any) => ({
 						sentiment: review.rating,
@@ -62,9 +67,19 @@ export default function ShowList() {
 		}
 	};
 
-	const filteredshows = shows.filter((row) =>
-		row.name.toLowerCase().includes(searchQuery.toLowerCase()),
-	);
+	//call asynchronous firebase function get show list and update show list state in use effect
+	useEffect(() => {
+		const fetchShowList = async () => {
+			const shows: ShowName[] = await getShowList();
+			setShowList(shows);
+		};
+		fetchShowList();
+	}, []);
+
+	const filteredShows =
+		showList?.filter((row) =>
+			row.name.toLowerCase().includes(searchQuery.toLowerCase()),
+		) ?? [];
 
 	return (
 		<div className="flex min-h-screen">
@@ -96,7 +111,7 @@ export default function ShowList() {
 					/>
 				</div>
 				<ul className="space-y-4">
-					{filteredshows.map((show) => (
+					{filteredShows.map((show) => (
 						<li key={show.name} className="rounded-lg">
 							<Linkbutton
 								selected={selectedShow?.name === show.name}
