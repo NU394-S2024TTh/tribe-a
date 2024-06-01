@@ -96,8 +96,9 @@ async function getReviews(showName: string): Promise<Review[]> {
 				const requestData: RequestData = { movie_names: [showName] };
 				const response: AxiosResponse<LambdaResponse> = await axios.post(
 					apiUrl,
-					requestData,
+					JSON.stringify(requestData),
 				);
+				console.log(response);
 				// Check if the Lambda function executed successfully
 				if (response.status !== 200) {
 					throw new Error(`Lambda function returned an error: ${response.data.body}`);
@@ -180,7 +181,6 @@ async function getShowList(): Promise<ShowName[]> {
 
 async function getPlatformData() {
 	console.log('Getting platform data');
-	// let reviewsData = await getReviews(showName);  // TODO: blocked by firebase functions
 	let reviewsData;
 
 	// TODO: workaround below: using the whole reviews list instead of filtered by show
@@ -190,7 +190,6 @@ async function getPlatformData() {
 
 		if (reviewsSnapshot.exists()) {
 			reviewsData = reviewsSnapshot.val(); // { reviewId: { source: 'IMDb', rating: 1.6 }, ...
-			// console.log("reviewsData", reviewsData);
 		} else {
 			throw new Error(`Review list not found `);
 		}
@@ -199,35 +198,38 @@ async function getPlatformData() {
 		return [];
 	}
 
-	const platformDataDict: { [key: string]: number } = {};
-	let count = 0;
+	const platformDataDict: { [key: string]: { totalRating: number; count: number } } = {};
+
 	for (const reviewId in reviewsData) {
-		const review: Review = reviewsData[reviewId];
+		const review = reviewsData[reviewId];
 		if (!('source' in review) || !('rating' in review)) {
 			continue;
 		}
-		count += 1;
+
 		const source = review.source;
 		const rating = review.rating;
+
 		if (typeof rating === 'number') {
 			if (source in platformDataDict) {
-				platformDataDict[source] += rating;
+				platformDataDict[source].totalRating += rating;
+				platformDataDict[source].count += 1;
 			} else {
-				platformDataDict[source] = rating;
+				platformDataDict[source] = { totalRating: rating, count: 1 };
 			}
 		}
 	}
 
-	for (const source in platformDataDict) {
-		platformDataDict[source] /= count;
-	}
-
-	// convert to array of objects
-	const platformData = Object.entries(platformDataDict).map(([name, number]) => ({
-		name,
-		number,
-	}));
-	console.log('platformData', platformData);
+	// Calculating the average rating for each source
+	const platformData = Object.entries(platformDataDict).map(([source, data]) => {
+		let averageRating = data.totalRating / data.count;
+		if (source.toLowerCase() === 'imdb') {
+			averageRating /= 2; // Special case for IMDb
+		}
+		return {
+			name: source,
+			number: averageRating,
+		};
+	});
 
 	return platformData;
 }

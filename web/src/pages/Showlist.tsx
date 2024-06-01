@@ -53,11 +53,18 @@ export default function ShowList() {
 					searchQuery.replace(/\s+/g, '_').toLowerCase(),
 				);
 				if (reviews) {
-					const reviews_data = reviews.map((review: any) => ({
-						sentiment: review.rating,
-						created: review.created,
-					}));
-					setReviewData(reviews_data);
+					const reviewsData = reviews
+						.filter(
+							(review: any) =>
+								review.rating !== undefined &&
+								review.rating !== null &&
+								review.rating !== '',
+						)
+						.map((review: any) => ({
+							sentiment: review.rating,
+							created: review.created,
+						}));
+					setReviewData(reviewsData);
 				} else {
 					setReviewData(null);
 				}
@@ -74,7 +81,7 @@ export default function ShowList() {
 			setShowList(shows);
 		};
 		fetchShowList();
-	}, []);
+	}, [selectedShow]);
 
 	const filteredShows =
 		showList?.filter((row) =>
