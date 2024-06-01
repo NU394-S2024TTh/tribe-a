@@ -63,6 +63,7 @@ export default function ShowList() {
 						.map((review: any) => ({
 							sentiment: review.rating,
 							created: review.created,
+							source: review.source,
 						}));
 					setReviewData(reviewsData);
 				} else {

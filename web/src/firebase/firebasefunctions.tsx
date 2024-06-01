@@ -16,6 +16,12 @@ export type Review = {
 	sentiment?: number;
 };
 
+export type ReviewSentimentData = {
+	sentiment: number;
+	created: string;
+	source: string;
+};
+
 export type Show = {
 	category: string;
 	name: string;
@@ -179,35 +185,19 @@ async function getShowList(): Promise<ShowName[]> {
 	}
 }
 
-async function getPlatformData() {
+function getPlatformData(reviewsData: ReviewSentimentData[]) {
+	console.log(reviewsData);
 	console.log('Getting platform data');
-	let reviewsData;
-
-	// TODO: workaround below: using the whole reviews list instead of filtered by show
-	try {
-		const reviewsRef = ref(database, 'reviews/');
-		const reviewsSnapshot = await get(reviewsRef);
-
-		if (reviewsSnapshot.exists()) {
-			reviewsData = reviewsSnapshot.val(); // { reviewId: { source: 'IMDb', rating: 1.6 }, ...
-		} else {
-			throw new Error(`Review list not found `);
-		}
-	} catch (e) {
-		console.error(e);
-		return [];
-	}
 
 	const platformDataDict: { [key: string]: { totalRating: number; count: number } } = {};
 
-	for (const reviewId in reviewsData) {
-		const review = reviewsData[reviewId];
-		if (!('source' in review) || !('rating' in review)) {
+	for (const review of reviewsData) {
+		if (!('source' in review) || !('sentiment' in review)) {
 			continue;
 		}
 
 		const source = review.source;
-		const rating = review.rating;
+		const rating = review.sentiment;
 
 		if (typeof rating === 'number') {
 			if (source in platformDataDict) {
@@ -220,18 +210,22 @@ async function getPlatformData() {
 	}
 
 	// Calculating the average rating for each source
-	const platformData = Object.entries(platformDataDict).map(([source, data]) => {
-		let averageRating = data.totalRating / data.count;
-		if (source.toLowerCase() === 'imdb') {
-			averageRating /= 2; // Special case for IMDb
-		}
-		return {
-			name: source,
-			number: averageRating,
-		};
-	});
+	const platformData = Object.entries(platformDataDict).map(([source, data]) => ({
+		name: source,
+		number: data.totalRating / data.count,
+	}));
+
+	console.log(platformData);
 
 	return platformData;
+}
+
+export function formatShowName(showName: string) {
+	// Remove the season information (e.g., "(Season 3)")
+	const nameWithoutSeason = showName.replace(/\s*\(Season \d+\)\s*$/i, '');
+
+	// Remove colons, replace spaces with underscores, and convert to lowercase
+	return nameWithoutSeason.replace(/:/g, '').replace(/\s+/g, '_').toLowerCase();
 }
 
 export { getPlatformData, getReviews, getShowList };

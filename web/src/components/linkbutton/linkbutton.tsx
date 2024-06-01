@@ -4,7 +4,7 @@ import '../../themes/index.css';
 
 import React, { useRef, useState } from 'react';
 
-import { getReviews, Review } from '../../firebase/firebasefunctions';
+import { getReviews, Review, formatShowName } from '../../firebase/firebasefunctions';
 import { ShowName } from '../../firebase/firebasefunctions';
 import { useButtonPress } from './buttonpress';
 interface LinkButtonProps {
@@ -27,13 +27,6 @@ export const Linkbutton = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
 
-	function formatShowName(showName: string) {
-		// Remove the season information (e.g., "(Season 3)")
-		const nameWithoutSeason = showName.replace(/\s*\(Season \d+\)\s*$/i, '');
-
-		// Remove colons, replace spaces with underscores, and convert to lowercase
-		return nameWithoutSeason.replace(/:/g, '').replace(/\s+/g, '_').toLowerCase();
-	}
 	const handleButtonClick = async () => {
 		setIsLoading(true);
 		setError(null);
@@ -51,6 +44,7 @@ export const Linkbutton = ({
 				.map((review: any) => ({
 					sentiment: review.rating,
 					created: review.created,
+					source: review.source,
 				}));
 			onDataReceived(reviewsData);
 		} catch (error: any) {

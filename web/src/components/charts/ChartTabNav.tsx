@@ -78,11 +78,10 @@ function formatData(reviews: { sentiment: number; created: string }[]) {
 // 	},
 // ];
 
-const platformData = await getPlatformData();
-
 export default function Tabs({ data }: TabsProps) {
 	const [modData, setData] = useState(data);
 	const [updated, setUpdated] = useState(false);
+
 	useEffect(() => {
 		setData(modData);
 		if (
@@ -92,6 +91,7 @@ export default function Tabs({ data }: TabsProps) {
 			setUpdated(true);
 		}
 	}, [data]);
+
 	return (
 		<RootWrapper>
 			<TabsPrimitive.Root defaultValue="tab1">
@@ -139,7 +139,7 @@ export default function Tabs({ data }: TabsProps) {
 								} else if (value == 'tab2') {
 									return (
 										<div className="mt-10 flex w-full flex-col items-center justify-center">
-											<BarGraph receivedData={platformData} empty={!updated} />
+											<BarGraph receivedData={getPlatformData(data)} empty={!updated} />
 										</div>
 									);
 								} else if (value === 'tab3') {
