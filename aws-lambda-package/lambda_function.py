@@ -16,8 +16,8 @@ logging.basicConfig(
 )
 
 # Reddit API credentials
-client_id = "VVDFsXhfzl5Bk_Il_ykTwg"
-client_secret = "1PSjnF_Od4nMEm7AuOyUgl0fNO_PMw"
+client_id = "YOUR_CLIENT_ID"
+client_secret = "YOUR_CLIENT_SECRET"
 user_agent = "USER-AGENT"
 
 
@@ -195,7 +195,7 @@ def scrape_reddit_reviews(post_url):
 
 
 def call_perplexity_api(show_name="tracker"):
-    API_KEY = "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"
+    API_KEY = "YOUR_API_KEY"
     MODEL = "llama-3-sonar-large-32k-online"
     API_ENDPOINT = "https://api.perplexity.ai/chat/completions"
     CONTENT = "You are an artificial intelligence assistant and you need to engage in a helpful, detailed, polite conversation with a user."
